@@ -9,6 +9,12 @@ app.use(express.json())
 const conexao = require("./db.js") 
 const porta = 3000   
 
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
  
 app.listen(porta,()=>(   
     console.log(`servidor rodando em http://localhost:${porta}`)   
