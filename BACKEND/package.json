@@ -10,9 +10,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "mysql2": "^3.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.22.2",
+    "swagger-ui": "^5.32.4",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {

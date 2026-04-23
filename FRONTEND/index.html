@@ -17,7 +17,7 @@
             min-height: 100vh;
         }
 
-        /* Cores do tema - Mesclando Azul Escuro com Cinza */
+        /* Cores do tema */
         :root {
             --azul-escuro: #0a1a2f;
             --azul-médio: #1a2a4f;
@@ -25,7 +25,6 @@
             --cinza-médio: #666666;
             --cinza-claro: #e0e0e0;
             --branco: #ffffff;
-            --preto: #000000;
             --cinza-fundo: #f8f9fa;
         }
 
@@ -71,7 +70,6 @@
             transform: scale(1.05);
         }
 
-        /* Caso não tenha imagem, use esse texto */
         .logo-text {
             font-size: 2.2rem;
             font-weight: bold;
@@ -283,7 +281,7 @@
             opacity: 0.8;
         }
 
-        /* Galeria de Imagens */
+        /* Galeria */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -634,6 +632,21 @@
             margin-bottom: 20px;
         }
 
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot-password a {
+            color: var(--azul-escuro);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .header {
                 padding: 15px 20px;
@@ -713,11 +726,6 @@
                         <p>Desde nossa fundação, buscamos proporcionar uma experiência única, onde cada cliente é tratado com exclusividade e atenção aos detalhes. Nossa missão é realçar a autoestima dos homens através de serviços de alta qualidade em um ambiente sofisticado e acolhedor.</p>
                         <h3>✨ Nossa Filosofia</h3>
                         <p>Acreditamos que cuidar da aparência vai além da estética - é sobre bem-estar, confiança e estilo. Por isso, investimos constantemente em produtos premium, técnicas atualizadas e no desenvolvimento da nossa equipe.</p>
-                        <h3>🎯 Nossos Valores</h3>
-                        <p><strong>Excelência:</strong> Buscamos a perfeição em cada serviço realizado.<br>
-                        <strong>Respeito:</strong> Valorizamos cada cliente e sua individualidade.<br>
-                        <strong>Inovação:</strong> Sempre atualizados com as tendências do mercado.<br>
-                        <strong>Tradição:</strong> Preservamos as técnicas clássicas da barbearia.</p>
                     </div>
                     <div class="about-image">
                         <div class="icon">🏪</div>
@@ -727,29 +735,28 @@
             </div>
         </div>
 
-        <!-- Galeria de Imagens -->
+        <!-- Galeria -->
         <div id="gallery" class="section section-gray">
             <div class="container">
                 <h2 class="section-title">Nossa Galeria</h2>
                 <p class="section-subtitle">Conheça nosso espaço e serviços</p>
                 <div class="gallery-grid" id="galleryGrid">
-                    <!-- Placeholders para imagens - você vai substituir pelos caminhos reais -->
                     <div class="gallery-item">
-                        <img src="corte1.jpg" alt="Corte de cabelo" class="gallery-img" onerror="this.src='https://placehold.co/600x400/1a2a4f/ffffff?text=Corte+de+Cabelo'">
+                        <img src="corte1.jpg" alt="Corte de cabelo" class="gallery-img">
                         <div class="gallery-overlay">
                             <h4>Corte Estiloso</h4>
                             <p>Tendências modernas para todos os estilos</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="barba.jpg" alt="Barba" class="gallery-img" onerror="this.src='https://placehold.co/600x400/1a2a4f/ffffff?text=Barba+Perfeita'">
+                        <img src="barba.jpg" alt="Barba" class="gallery-img">
                         <div class="gallery-overlay">
                             <h4>Barba Perfeita</h4>
                             <p>Modelagem e cuidados especiais</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="espaco.jpg" alt="Espaço" class="gallery-img" onerror="this.src='https://placehold.co/600x400/1a2a4f/ffffff?text=Espaço+Premium'">
+                        <img src="espaco.jpg" alt="Espaço" class="gallery-img">
                         <div class="gallery-overlay">
                             <h4>Espaço Premium</h4>
                             <p>Ambiente aconchegante e moderno</p>
@@ -803,6 +810,9 @@
                     <input type="password" id="loginSenha" placeholder="********">
                 </div>
                 <button onclick="fazerLogin()">Entrar</button>
+                <div class="forgot-password">
+                    <a href="#" onclick="showEsqueciSenha()">Esqueci minha senha?</a>
+                </div>
                 <div id="loginMessage"></div>
             </div>
         </div>
@@ -819,9 +829,10 @@
                 </div>
             </div>
             <div class="tabs">
-                <button class="tab active" onclick="showTab('usuarios')">Usuários</button>
-                <button class="tab" onclick="showTab('perfil')">Meu Perfil</button>
-                <button class="tab" onclick="showTab('cadastrar')">Cadastrar</button>
+                <button class="tab active" onclick="showTab('usuarios', event)">Usuários</button>
+                <button class="tab" onclick="showTab('perfil', event)">Meu Perfil</button>
+                <button class="tab" onclick="showTab('cadastrar', event)">Cadastrar</button>
+                <button class="tab" onclick="showTab('servicos', event)">Serviços</button>
             </div>
             
             <!-- Tab Usuários -->
@@ -832,7 +843,7 @@
                         <tr><th>ID</th><th>Nome</th><th>CEP</th><th>Email</th><th>Ações</th></tr>
                     </thead>
                     <tbody id="usersList"></tbody>
-                </table>
+                 </table>
             </div>
 
             <!-- Tab Perfil -->
@@ -846,19 +857,19 @@
             <div class="tab-content" id="tabCadastrar">
                 <h3>Cadastrar Novo Usuário</h3>
                 <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" id="cadNome">
+                    <label>Nome Completo *</label>
+                    <input type="text" id="cadNome" placeholder="Digite o nome completo">
                 </div>
                 <div class="form-group">
-                    <label>CEP</label>
-                    <input type="text" id="cadCep">
+                    <label>CEP *</label>
+                    <input type="text" id="cadCep" placeholder="Digite o CEP">
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="cadEmail">
+                    <label>Email *</label>
+                    <input type="email" id="cadEmail" placeholder="email@exemplo.com">
                 </div>
                 <div class="form-group">
-                    <label>Senha</label>
+                    <label>Senha (opcional - deixe em branco para primeiro acesso)</label>
                     <input type="password" id="cadSenha" placeholder="********">
                 </div>
                 <button onclick="cadastrarUsuario()">Cadastrar</button>
@@ -867,7 +878,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal para Edição e Recuperação de Senha -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <div id="modalContent"></div>
@@ -878,6 +889,7 @@
     <script>
         const API_URL = 'http://localhost:3000';
         let usuarioLogado = null;
+        let tokenAtual = null;
 
         // Testar conexão com o backend
         async function testarConexao() {
@@ -939,6 +951,34 @@
         function showLogin() {
             document.getElementById('landingPage').style.display = 'none';
             document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginSenha').value = '';
+            document.getElementById('loginMessage').innerHTML = '';
+        }
+
+        // ================= FUNÇÕES DE LOGIN E PRIMEIRO ACESSO =================
+        async function primeiroAcesso(id_usuario, nova_senha) {
+            try {
+                const response = await fetch(`${API_URL}/primeiro-acesso`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_usuario, nova_senha })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert(data.mensagem);
+                    return true;
+                } else {
+                    alert(data.error || 'Erro ao cadastrar senha');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro de conexão com o servidor');
+                return false;
+            }
         }
 
         async function fazerLogin() {
@@ -951,14 +991,20 @@
             }
 
             try {
-                const response = await fetch(`${API_URL}/buscar`);
-                const usuarios = await response.json();
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, senha })
+                });
                 
-                const usuarioEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
+                const data = await response.json();
                 
-                if (usuarioEncontrado) {
-                    usuarioLogado = usuarioEncontrado;
-                    document.getElementById('userName').innerText = usuarioLogado.nome_completo;
+                if (response.ok) {
+                    // Login bem sucedido
+                    usuarioLogado = data.usuario;
+                    tokenAtual = data.token;
+                    localStorage.setItem('token', data.token);
+                    document.getElementById('userName').innerText = usuarioLogado.nome;
                     
                     document.getElementById('loginPage').style.display = 'none';
                     document.getElementById('systemPage').style.display = 'block';
@@ -967,19 +1013,32 @@
                         carregarUsuarios(),
                         carregarPerfil()
                     ]);
+                } else if (response.status === 403 && data.primeiro_acesso) {
+                    // Primeiro acesso - solicitar cadastro de senha
+                    const novaSenha = prompt('🔄 Primeiro acesso! Cadastre sua nova senha (mínimo 6 caracteres):');
+                    if (novaSenha && novaSenha.length >= 6) {
+                        const cadastrou = await primeiroAcesso(data.usuario_id, novaSenha);
+                        if (cadastrou) {
+                            // Tentar login novamente
+                            fazerLogin();
+                        }
+                    } else if (novaSenha && novaSenha.length < 6) {
+                        alert('❌ A senha deve ter no mínimo 6 caracteres!');
+                    }
                 } else {
                     const messageDiv = document.getElementById('loginMessage');
                     messageDiv.className = 'message error';
-                    messageDiv.innerText = 'Email ou senha incorretos';
+                    messageDiv.innerText = data.mensagem || 'Erro ao fazer login';
                 }
             } catch (error) {
                 console.error('Erro:', error);
                 const messageDiv = document.getElementById('loginMessage');
                 messageDiv.className = 'message error';
-                messageDiv.innerText = 'Erro de conexão com o servidor';
+                messageDiv.innerText = '❌ Erro de conexão com o servidor';
             }
         }
 
+        // ================= CRUD DE USUÁRIOS =================
         async function carregarUsuarios() {
             try {
                 const response = await fetch(`${API_URL}/buscar`);
@@ -991,13 +1050,13 @@
                 usuarios.forEach(usuario => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${usuario.id || usuario.id_usuario || ''}</td>
+                        <td>${usuario.id_usuario}</td>
                         <td>${usuario.nome_completo}</td>
                         <td>${usuario.cep}</td>
                         <td>${usuario.email}</td>
                         <td>
-                            <button class="btn-editar" onclick="editarUsuario(${usuario.id || usuario.id_usuario})">Editar</button>
-                            <button class="btn-deletar" onclick="deletarUsuario(${usuario.id || usuario.id_usuario})">Deletar</button>
+                            <button class="btn-editar" onclick="editarUsuario(${usuario.id_usuario})">Editar</button>
+                            <button class="btn-deletar" onclick="deletarUsuario(${usuario.id_usuario})">Deletar</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -1014,8 +1073,8 @@
             const email = document.getElementById('cadEmail').value;
             const senha = document.getElementById('cadSenha').value;
 
-            if (!nome_completo || !cep || !email || !senha) {
-                alert('Preencha todos os campos');
+            if (!nome_completo || !cep || !email) {
+                alert('Preencha todos os campos obrigatórios (*)');
                 return;
             }
 
@@ -1023,22 +1082,31 @@
                 const response = await fetch(`${API_URL}/cadastrar`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nome_completo, cep, email, senha })
+                    body: JSON.stringify({ 
+                        nome_completo, 
+                        cep, 
+                        email, 
+                        senha: senha || '' 
+                    })
                 });
                 const data = await response.json();
                 
                 const messageDiv = document.getElementById('cadMessage');
-                if (data.insertId || data.affectedRows) {
+                if (response.ok) {
                     messageDiv.className = 'message success';
-                    messageDiv.innerText = '✅ Usuário cadastrado com sucesso!';
+                    messageDiv.innerText = data.mensagem;
                     document.getElementById('cadNome').value = '';
                     document.getElementById('cadCep').value = '';
                     document.getElementById('cadEmail').value = '';
                     document.getElementById('cadSenha').value = '';
                     carregarUsuarios();
+                    
+                    setTimeout(() => {
+                        messageDiv.innerHTML = '';
+                    }, 5000);
                 } else {
                     messageDiv.className = 'message error';
-                    messageDiv.innerText = '❌ Erro ao cadastrar';
+                    messageDiv.innerText = data.error || '❌ Erro ao cadastrar';
                 }
             } catch (error) {
                 console.error('Erro:', error);
@@ -1048,21 +1116,21 @@
             }
         }
 
-        function editarUsuario(id) {
+        function editarUsuario(id_usuario) {
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
             
             fetch(`${API_URL}/buscar`)
                 .then(res => res.json())
                 .then(usuarios => {
-                    const usuario = usuarios.find(u => (u.id || u.id_usuario) === id);
+                    const usuario = usuarios.find(u => u.id_usuario === id_usuario);
                     if (!usuario) return;
                     
                     modalContent.innerHTML = `
                         <h3>Editar Usuário</h3>
                         <div class="form-group">
                             <label>Nome Completo</label>
-                            <input type="text" id="editNome" value="${usuario.nome_completo}">
+                            <input type="text" id="editNome" value="${usuario.nome_completo.replace(/'/g, "\\'")}">
                         </div>
                         <div class="form-group">
                             <label>CEP</label>
@@ -1073,39 +1141,45 @@
                             <input type="email" id="editEmail" value="${usuario.email}">
                         </div>
                         <div class="form-group">
-                            <label>Senha</label>
-                            <input type="password" id="editSenha" value="${usuario.senha}" placeholder="Nova senha">
+                            <label>Nova Senha (opcional)</label>
+                            <input type="password" id="editSenha" placeholder="Deixe em branco para manter a atual">
                         </div>
-                        <button onclick="salvarEdicao(${id})">Salvar</button>
+                        <button onclick="salvarEdicao(${id_usuario})">Salvar</button>
                     `;
                     modal.style.display = 'flex';
                 });
         }
 
-        async function salvarEdicao(id) {
+        async function salvarEdicao(id_usuario) {
             const nome_completo = document.getElementById('editNome').value;
             const cep = document.getElementById('editCep').value;
             const email = document.getElementById('editEmail').value;
             const senha = document.getElementById('editSenha').value;
 
+            if (!nome_completo || !cep || !email) {
+                alert('Preencha todos os campos obrigatórios');
+                return;
+            }
+
             try {
                 const response = await fetch(`${API_URL}/atualizar`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id, nome_completo, cep, email, senha })
+                    body: JSON.stringify({ id_usuario, nome_completo, cep, email, senha })
                 });
                 const data = await response.json();
                 
-                if (data.affectedRows !== undefined) {
+                if (response.ok) {
                     alert('✅ Usuário atualizado com sucesso!');
                     fecharModal();
                     carregarUsuarios();
-                    if (usuarioLogado && (usuarioLogado.id === id || usuarioLogado.id_usuario === id)) {
-                        usuarioLogado = { ...usuarioLogado, nome_completo, email };
+                    if (usuarioLogado && usuarioLogado.id_usuario === id_usuario) {
+                        usuarioLogado = { ...usuarioLogado, nome_completo, email, cep };
                         carregarPerfil();
+                        document.getElementById('userName').innerText = nome_completo;
                     }
                 } else {
-                    alert('❌ Erro ao atualizar usuário');
+                    alert(data.error || '❌ Erro ao atualizar usuário');
                 }
             } catch (error) {
                 console.error('Erro:', error);
@@ -1113,21 +1187,21 @@
             }
         }
 
-        async function deletarUsuario(id) {
+        async function deletarUsuario(id_usuario) {
             if (confirm('Tem certeza que deseja deletar este usuário?')) {
                 try {
                     const response = await fetch(`${API_URL}/deletar`, {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id })
+                        body: JSON.stringify({ id_usuario })
                     });
                     const data = await response.json();
                     
-                    if (data.affectedRows !== undefined) {
+                    if (response.ok) {
                         alert('✅ Usuário deletado com sucesso!');
                         carregarUsuarios();
                     } else {
-                        alert('❌ Erro ao deletar usuário');
+                        alert(data.error || '❌ Erro ao deletar usuário');
                     }
                 } catch (error) {
                     console.error('Erro:', error);
@@ -1136,23 +1210,109 @@
             }
         }
 
+        // ================= FUNÇÕES DE PERFIL =================
         function showEditarPerfil() {
             if (!usuarioLogado) return;
-            editarUsuario(usuarioLogado.id || usuarioLogado.id_usuario);
+            editarUsuario(usuarioLogado.id_usuario);
         }
 
         function carregarPerfil() {
             if (!usuarioLogado) return;
             const perfilDiv = document.getElementById('perfilInfo');
             perfilDiv.innerHTML = `
-                <p><strong>ID:</strong> ${usuarioLogado.id || usuarioLogado.id_usuario}</p>
-                <p><strong>Nome:</strong> ${usuarioLogado.nome_completo}</p>
+                <p><strong>ID:</strong> ${usuarioLogado.id_usuario}</p>
+                <p><strong>Nome:</strong> ${usuarioLogado.nome}</p>
                 <p><strong>Email:</strong> ${usuarioLogado.email}</p>
                 <p><strong>CEP:</strong> ${usuarioLogado.cep}</p>
             `;
         }
 
-        function showTab(tabName) {
+        // ================= ESQUECI MINHA SENHA =================
+        function showEsqueciSenha() {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h3>🔐 Recuperar Senha</h3>
+                <div class="form-group">
+                    <label>Digite seu email cadastrado</label>
+                    <input type="email" id="resetEmail" placeholder="seu@email.com">
+                </div>
+                <button onclick="solicitarResetSenha()">Enviar link de recuperação</button>
+                <div id="resetMessage" style="margin-top: 15px;"></div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        async function solicitarResetSenha() {
+            const email = document.getElementById('resetEmail').value;
+            const messageDiv = document.getElementById('resetMessage');
+            
+            if (!email) {
+                messageDiv.className = 'message error';
+                messageDiv.innerHTML = '❌ Digite seu email';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/esqueci-senha`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    messageDiv.className = 'message success';
+                    messageDiv.innerHTML = `✅ ${data.mensagem}<br><br>Token de demonstração: <strong>${data.token}</strong><br><br>Use este token para trocar sua senha.`;
+                    
+                    // Adicionar campo para nova senha
+                    setTimeout(() => {
+                        if (confirm('Deseja trocar a senha agora?')) {
+                            const novaSenha = prompt('Digite sua nova senha (mínimo 6 caracteres):');
+                            if (novaSenha && novaSenha.length >= 6) {
+                                resetarSenha(data.token, novaSenha);
+                            } else if (novaSenha) {
+                                alert('❌ Senha deve ter no mínimo 6 caracteres!');
+                            }
+                        }
+                    }, 1000);
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.innerHTML = data.mensagem || '❌ Erro ao solicitar recuperação';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                messageDiv.className = 'message error';
+                messageDiv.innerHTML = '❌ Erro de conexão com o servidor';
+            }
+        }
+
+        async function resetarSenha(token, nova_senha) {
+            try {
+                const response = await fetch(`${API_URL}/resetar-senha`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, nova_senha })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ ' + data.mensagem);
+                    fecharModal();
+                } else {
+                    alert('❌ ' + (data.error || 'Erro ao resetar senha'));
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro de conexão com o servidor');
+            }
+        }
+
+        // ================= UTILITÁRIOS =================
+        function showTab(tabName, event) {
             const tabs = document.querySelectorAll('.tab');
             const contents = document.querySelectorAll('.tab-content');
             
@@ -1169,18 +1329,30 @@
 
         function logout() {
             usuarioLogado = null;
+            tokenAtual = null;
+            localStorage.removeItem('token');
             document.getElementById('systemPage').style.display = 'none';
             document.getElementById('landingPage').style.display = 'block';
             document.getElementById('loginEmail').value = '';
             document.getElementById('loginSenha').value = '';
         }
 
+        // Verificar se há token salvo (manter login)
+        function verificarTokenSalvo() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Tentar restaurar sessão
+                console.log('Token encontrado, mas precisa implementar validação');
+            }
+        }
+
         // Inicializar
         carregarLogo();
         testarConexao();
+        verificarTokenSalvo();
         
-        // Testar conexão a cada 10 segundos
-        setInterval(testarConexao, 10000);
+        // Testar conexão a cada 30 segundos
+        setInterval(testarConexao, 30000);
     </script>
 </body>
 </html>
