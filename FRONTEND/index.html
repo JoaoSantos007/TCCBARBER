@@ -1,11 +1,1186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BARBERSHOPP</title>
+    <title>Barbershop System - Barbearia de Elite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* Cores do tema - Mesclando Azul Escuro com Cinza */
+        :root {
+            --azul-escuro: #0a1a2f;
+            --azul-médio: #1a2a4f;
+            --cinza-escuro: #2c2c2c;
+            --cinza-médio: #666666;
+            --cinza-claro: #e0e0e0;
+            --branco: #ffffff;
+            --preto: #000000;
+            --cinza-fundo: #f8f9fa;
+        }
+
+        /* Landing Page */
+        .landing-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--cinza-fundo) 0%, var(--branco) 100%);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: var(--branco);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--azul-escuro);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            height: 100px;
+            width: auto;
+            max-width: 250px;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Caso não tenha imagem, use esse texto */
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--azul-escuro);
+        }
+
+        .logo-text span {
+            color: var(--cinza-médio);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--cinza-escuro);
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--azul-escuro);
+        }
+
+        .btn-acessar-nav {
+            background: var(--azul-escuro);
+            color: var(--branco);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-acessar-nav:hover {
+            background: var(--azul-médio);
+            transform: translateY(-2px);
+            color: var(--branco);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--cinza-escuro) 100%);
+            margin-top: 0;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><text x="50%" y="50%" font-size="200" text-anchor="middle" dominant-baseline="middle" fill="rgba(255,255,255,0.03)">✂️</text></svg>') repeat;
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .hero-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--branco);
+        }
+
+        .hero h1 span {
+            color: var(--cinza-claro);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--cinza-claro);
+            margin-bottom: 30px;
+        }
+
+        .btn-acessar {
+            background: var(--branco);
+            color: var(--azul-escuro);
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-acessar:hover {
+            background: var(--cinza-claro);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Status Banner */
+        .status-banner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--branco);
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+            z-index: 1000;
+            border-left: 4px solid;
+        }
+
+        .status-banner.online {
+            border-left-color: #28a745;
+            color: #28a745;
+        }
+
+        .status-banner.offline {
+            border-left-color: #dc3545;
+            color: #dc3545;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 50px;
+        }
+
+        .section-light {
+            background: var(--branco);
+        }
+
+        .section-gray {
+            background: var(--cinza-fundo);
+        }
+
+        .section-dark {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--cinza-escuro) 100%);
+            color: var(--branco);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+        }
+
+        .section-dark .section-title {
+            color: var(--branco);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--cinza-médio);
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .section-dark .section-subtitle {
+            color: var(--cinza-claro);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--cinza-médio);
+        }
+
+        .about-text h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .about-image {
+            text-align: center;
+        }
+
+        .about-image .icon {
+            font-size: 10rem;
+            opacity: 0.8;
+        }
+
+        /* Galeria de Imagens */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+            height: 300px;
+            background: var(--cinza-claro);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h4 {
+            margin-bottom: 5px;
+        }
+
+        .gallery-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Team Grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .team-card {
+            background: var(--branco);
+            border-radius: 20px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .team-icon {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--cinza-escuro) 100%);
+            padding: 40px;
+            font-size: 4rem;
+        }
+
+        .team-card h3 {
+            margin: 20px 0 10px;
+            color: var(--azul-escuro);
+            font-size: 1.5rem;
+        }
+
+        .team-card p {
+            color: var(--cinza-médio);
+            padding: 0 20px 20px;
+        }
+
+        .team-funcao {
+            color: var(--azul-médio);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            background: var(--cinza-escuro);
+            color: var(--cinza-claro);
+            text-align: center;
+            padding: 40px;
+        }
+
+        .login-page, .system-page {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--cinza-fundo) 0%, var(--branco) 100%);
+            padding: 50px 20px;
+        }
+
+        .login-container, .system-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: var(--branco);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .login-header, .system-header {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--cinza-escuro) 100%);
+            color: var(--branco);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .login-header h2, .system-header h2 {
+            color: var(--branco);
+            margin-bottom: 10px;
+        }
+
+        .login-form, .system-content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cinza-escuro);
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--cinza-claro);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--azul-escuro);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--azul-escuro);
+            color: var(--branco);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: var(--azul-médio);
+            transform: translateY(-2px);
+        }
+
+        .link-button {
+            background: none;
+            color: var(--azul-escuro);
+            margin-top: 15px;
+        }
+
+        .link-button:hover {
+            background: none;
+            transform: none;
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .system-container {
+            max-width: 1200px;
+            width: 95%;
+        }
+
+        .system-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-name {
+            color: var(--branco);
+            font-weight: bold;
+        }
+
+        .btn-sair {
+            background: rgba(255,255,255,0.2);
+            width: auto;
+            padding: 8px 20px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--cinza-claro);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--cinza-médio);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--azul-escuro);
+        }
+
+        .tab.active {
+            color: var(--azul-escuro);
+            border-bottom: 3px solid var(--azul-escuro);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .users-table th, .users-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+
+        .users-table th {
+            background: var(--azul-escuro);
+            color: var(--branco);
+            font-weight: 600;
+        }
+
+        .users-table tr:hover {
+            background: var(--cinza-fundo);
+        }
+
+        .btn-editar, .btn-deletar {
+            padding: 6px 15px;
+            margin: 0 5px;
+            width: auto;
+            font-size: 0.85rem;
+        }
+
+        .btn-editar {
+            background: #28a745;
+        }
+
+        .btn-deletar {
+            background: #dc3545;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--branco);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .section {
+                padding: 50px 20px;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .logo-img {
+                height: 70px;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>teste ok</h1>
+    <!-- Status Banner -->
+    <div class="status-banner offline" id="statusBanner">
+        🔌 Verificando conexão...
+    </div>
+
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <div class="header">
+            <div class="logo-container" onclick="scrollToSection('home')">
+                <img src="logo.png" alt="Logo Barbershop" class="logo-img" id="logoImg">
+                <div class="logo-text" id="logoText" style="display: none;">BARBERSHOP<span>SYSTEM</span></div>
+            </div>
+            <div class="nav-links">
+                <a onclick="scrollToSection('home')">Home</a>
+                <a onclick="scrollToSection('about')">Quem Somos</a>
+                <a onclick="scrollToSection('gallery')">Galeria</a>
+                <a onclick="scrollToSection('team')">Nossa Equipe</a>
+                <a class="btn-acessar-nav" onclick="showLogin()">Acessar</a>
+            </div>
+        </div>
+
+        <div id="home" class="hero">
+            <div class="hero-content">
+                <div class="hero-icon"></div>
+                <h1>BARBERSHOP <span>SYSTEM</span></h1>
+                <p>Sua experiência premium em cuidados masculinos</p>
+                <button class="btn-acessar" onclick="showLogin()">Acessar Sistema</button>
+            </div>
+        </div>
+
+        <div id="about" class="section section-light">
+            <div class="container">
+                <h2 class="section-title">Quem Somos</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>A <strong>Barbershop System</strong> nasceu da paixão por oferecer o melhor em cuidados masculinos, combinando tradição e modernidade em um só lugar.</p>
+                        <p>Desde nossa fundação, buscamos proporcionar uma experiência única, onde cada cliente é tratado com exclusividade e atenção aos detalhes. Nossa missão é realçar a autoestima dos homens através de serviços de alta qualidade em um ambiente sofisticado e acolhedor.</p>
+                        <h3>✨ Nossa Filosofia</h3>
+                        <p>Acreditamos que cuidar da aparência vai além da estética - é sobre bem-estar, confiança e estilo. Por isso, investimos constantemente em produtos premium, técnicas atualizadas e no desenvolvimento da nossa equipe.</p>
+                        <h3>🎯 Nossos Valores</h3>
+                        <p><strong>Excelência:</strong> Buscamos a perfeição em cada serviço realizado.<br>
+                        <strong>Respeito:</strong> Valorizamos cada cliente e sua individualidade.<br>
+                        <strong>Inovação:</strong> Sempre atualizados com as tendências do mercado.<br>
+                        <strong>Tradição:</strong> Preservamos as técnicas clássicas da barbearia.</p>
+                    </div>
+                    <div class="about-image">
+                        <div class="icon">🏪</div>
+                        <p style="margin-top: 20px; color: var(--cinza-médio);">Ambiente premium e acolhedor</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galeria de Imagens -->
+        <div id="gallery" class="section section-gray">
+            <div class="container">
+                <h2 class="section-title">Nossa Galeria</h2>
+                <p class="section-subtitle">Conheça nosso espaço e serviços</p>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Placeholders para imagens - você vai substituir pelos caminhos reais -->
+                    <div class="gallery-item">
+                        <img src="corte1.jpg" alt="Corte de cabelo" class="gallery-img" onerror="this.src='https://placehold.co/600x400/1a2a4f/ffffff?text=Corte+de+Cabelo'">
+                        <div class="gallery-overlay">
+                            <h4>Corte Estiloso</h4>
+                            <p>Tendências modernas para todos os estilos</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="barba.jpg" alt="Barba" class="gallery-img" onerror="this.src='https://placehold.co/600x400/1a2a4f/ffffff?text=Barba+Perfeita'">
+                        <div class="gallery-overlay">
+                            <h4>Barba Perfeita</h4>
+                            <p>Modelagem e cuidados especiais</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="espaco.jpg" alt="Espaço" class="gallery-img" onerror="this.src='https://placehold.co/600x400/1a2a4f/ffffff?text=Espaço+Premium'">
+                        <div class="gallery-overlay">
+                            <h4>Espaço Premium</h4>
+                            <p>Ambiente aconchegante e moderno</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="team" class="section section-dark">
+            <div class="container">
+                <h2 class="section-title">Nossa Equipe</h2>
+                <p class="section-subtitle">Profissionais dedicados ao seu bem-estar</p>
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-icon">👨‍🦰</div>
+                        <h3>Joao Marafon</h3>
+                        <p class="team-funcao">Desenvolvedor</p>
+                        <p>Especialista em criar soluções inovadoras</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-icon">👨‍🦱</div>
+                        <h3>Gustavo Alves</h3>
+                        <p class="team-funcao">Desenvolvedor</p>
+                        <p>Focado em experiência do usuário</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 Barbershop System - Todos os direitos reservados</p>
+            <p style="margin-top: 10px;">📍 Rua da Barbearia, 123 | 📞 (11) 99999-9999 | ✉️ contato@barbershop.com</p>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Bem-vindo de volta</h2>
+                <p>Faça login para continuar</p>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="loginSenha" placeholder="********">
+                </div>
+                <button onclick="fazerLogin()">Entrar</button>
+                <div id="loginMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Page -->
+    <div class="system-page" id="systemPage">
+        <div class="system-container">
+            <div class="system-header">
+                <h2>✂️ Barbershop System</h2>
+                <div class="user-info">
+                    <span class="user-name" id="userName"></span>
+                    <button class="btn-sair" onclick="logout()">Sair</button>
+                </div>
+            </div>
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('usuarios')">Usuários</button>
+                <button class="tab" onclick="showTab('perfil')">Meu Perfil</button>
+                <button class="tab" onclick="showTab('cadastrar')">Cadastrar</button>
+            </div>
+            
+            <!-- Tab Usuários -->
+            <div class="tab-content active" id="tabUsuarios">
+                <h3>Lista de Usuários</h3>
+                <table class="users-table">
+                    <thead>
+                        <tr><th>ID</th><th>Nome</th><th>CEP</th><th>Email</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody id="usersList"></tbody>
+                </table>
+            </div>
+
+            <!-- Tab Perfil -->
+            <div class="tab-content" id="tabPerfil">
+                <h3>Meu Perfil</h3>
+                <div id="perfilInfo"></div>
+                <button onclick="showEditarPerfil()" style="margin-top: 20px;">Editar Perfil</button>
+            </div>
+
+            <!-- Tab Cadastrar -->
+            <div class="tab-content" id="tabCadastrar">
+                <h3>Cadastrar Novo Usuário</h3>
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="cadNome">
+                </div>
+                <div class="form-group">
+                    <label>CEP</label>
+                    <input type="text" id="cadCep">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="cadEmail">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="cadSenha" placeholder="********">
+                </div>
+                <button onclick="cadastrarUsuario()">Cadastrar</button>
+                <div id="cadMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div id="modalContent"></div>
+            <button class="link-button" onclick="fecharModal()" style="margin-top: 15px;">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let usuarioLogado = null;
+
+        // Testar conexão com o backend
+        async function testarConexao() {
+            const statusBanner = document.getElementById('statusBanner');
+            try {
+                const response = await fetch(`${API_URL}/buscar`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    statusBanner.className = 'status-banner online';
+                    statusBanner.innerHTML = '✅ Conectado ao servidor';
+                    console.log('✅ Conexão com backend estabelecida!');
+                    return true;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusBanner.className = 'status-banner offline';
+                statusBanner.innerHTML = '❌ Sem conexão. Verifique se o backend está rodando em ' + API_URL;
+                console.error('❌ Erro de conexão:', error);
+                return false;
+            }
+        }
+
+        function carregarLogo() {
+            const logoImg = document.getElementById('logoImg');
+            const logoText = document.getElementById('logoText');
+            
+            logoImg.onload = function() {
+                logoImg.style.display = 'block';
+                logoText.style.display = 'none';
+            };
+            
+            logoImg.onerror = function() {
+                logoImg.style.display = 'none';
+                logoText.style.display = 'block';
+            };
+            
+            if (logoImg.complete) {
+                if (logoImg.naturalWidth === 0) {
+                    logoImg.style.display = 'none';
+                    logoText.style.display = 'block';
+                } else {
+                    logoImg.style.display = 'block';
+                    logoText.style.display = 'none';
+                }
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+        }
+
+        async function fazerLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const senha = document.getElementById('loginSenha').value;
+
+            if (!email || !senha) {
+                alert('Preencha email e senha');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/buscar`);
+                const usuarios = await response.json();
+                
+                const usuarioEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
+                
+                if (usuarioEncontrado) {
+                    usuarioLogado = usuarioEncontrado;
+                    document.getElementById('userName').innerText = usuarioLogado.nome_completo;
+                    
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('systemPage').style.display = 'block';
+                    
+                    await Promise.all([
+                        carregarUsuarios(),
+                        carregarPerfil()
+                    ]);
+                } else {
+                    const messageDiv = document.getElementById('loginMessage');
+                    messageDiv.className = 'message error';
+                    messageDiv.innerText = 'Email ou senha incorretos';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                const messageDiv = document.getElementById('loginMessage');
+                messageDiv.className = 'message error';
+                messageDiv.innerText = 'Erro de conexão com o servidor';
+            }
+        }
+
+        async function carregarUsuarios() {
+            try {
+                const response = await fetch(`${API_URL}/buscar`);
+                const usuarios = await response.json();
+                
+                const tbody = document.getElementById('usersList');
+                tbody.innerHTML = '';
+                
+                usuarios.forEach(usuario => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${usuario.id || usuario.id_usuario || ''}</td>
+                        <td>${usuario.nome_completo}</td>
+                        <td>${usuario.cep}</td>
+                        <td>${usuario.email}</td>
+                        <td>
+                            <button class="btn-editar" onclick="editarUsuario(${usuario.id || usuario.id_usuario})">Editar</button>
+                            <button class="btn-deletar" onclick="deletarUsuario(${usuario.id || usuario.id_usuario})">Deletar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('usersList').innerHTML = '<tr><td colspan="5">❌ Erro ao carregar usuários</td></tr>';
+            }
+        }
+
+        async function cadastrarUsuario() {
+            const nome_completo = document.getElementById('cadNome').value;
+            const cep = document.getElementById('cadCep').value;
+            const email = document.getElementById('cadEmail').value;
+            const senha = document.getElementById('cadSenha').value;
+
+            if (!nome_completo || !cep || !email || !senha) {
+                alert('Preencha todos os campos');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/cadastrar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome_completo, cep, email, senha })
+                });
+                const data = await response.json();
+                
+                const messageDiv = document.getElementById('cadMessage');
+                if (data.insertId || data.affectedRows) {
+                    messageDiv.className = 'message success';
+                    messageDiv.innerText = '✅ Usuário cadastrado com sucesso!';
+                    document.getElementById('cadNome').value = '';
+                    document.getElementById('cadCep').value = '';
+                    document.getElementById('cadEmail').value = '';
+                    document.getElementById('cadSenha').value = '';
+                    carregarUsuarios();
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.innerText = '❌ Erro ao cadastrar';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                const messageDiv = document.getElementById('cadMessage');
+                messageDiv.className = 'message error';
+                messageDiv.innerText = '❌ Erro de conexão com o servidor';
+            }
+        }
+
+        function editarUsuario(id) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalContent');
+            
+            fetch(`${API_URL}/buscar`)
+                .then(res => res.json())
+                .then(usuarios => {
+                    const usuario = usuarios.find(u => (u.id || u.id_usuario) === id);
+                    if (!usuario) return;
+                    
+                    modalContent.innerHTML = `
+                        <h3>Editar Usuário</h3>
+                        <div class="form-group">
+                            <label>Nome Completo</label>
+                            <input type="text" id="editNome" value="${usuario.nome_completo}">
+                        </div>
+                        <div class="form-group">
+                            <label>CEP</label>
+                            <input type="text" id="editCep" value="${usuario.cep}">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="editEmail" value="${usuario.email}">
+                        </div>
+                        <div class="form-group">
+                            <label>Senha</label>
+                            <input type="password" id="editSenha" value="${usuario.senha}" placeholder="Nova senha">
+                        </div>
+                        <button onclick="salvarEdicao(${id})">Salvar</button>
+                    `;
+                    modal.style.display = 'flex';
+                });
+        }
+
+        async function salvarEdicao(id) {
+            const nome_completo = document.getElementById('editNome').value;
+            const cep = document.getElementById('editCep').value;
+            const email = document.getElementById('editEmail').value;
+            const senha = document.getElementById('editSenha').value;
+
+            try {
+                const response = await fetch(`${API_URL}/atualizar`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, nome_completo, cep, email, senha })
+                });
+                const data = await response.json();
+                
+                if (data.affectedRows !== undefined) {
+                    alert('✅ Usuário atualizado com sucesso!');
+                    fecharModal();
+                    carregarUsuarios();
+                    if (usuarioLogado && (usuarioLogado.id === id || usuarioLogado.id_usuario === id)) {
+                        usuarioLogado = { ...usuarioLogado, nome_completo, email };
+                        carregarPerfil();
+                    }
+                } else {
+                    alert('❌ Erro ao atualizar usuário');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro de conexão com o servidor');
+            }
+        }
+
+        async function deletarUsuario(id) {
+            if (confirm('Tem certeza que deseja deletar este usuário?')) {
+                try {
+                    const response = await fetch(`${API_URL}/deletar`, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.affectedRows !== undefined) {
+                        alert('✅ Usuário deletado com sucesso!');
+                        carregarUsuarios();
+                    } else {
+                        alert('❌ Erro ao deletar usuário');
+                    }
+                } catch (error) {
+                    console.error('Erro:', error);
+                    alert('❌ Erro de conexão com o servidor');
+                }
+            }
+        }
+
+        function showEditarPerfil() {
+            if (!usuarioLogado) return;
+            editarUsuario(usuarioLogado.id || usuarioLogado.id_usuario);
+        }
+
+        function carregarPerfil() {
+            if (!usuarioLogado) return;
+            const perfilDiv = document.getElementById('perfilInfo');
+            perfilDiv.innerHTML = `
+                <p><strong>ID:</strong> ${usuarioLogado.id || usuarioLogado.id_usuario}</p>
+                <p><strong>Nome:</strong> ${usuarioLogado.nome_completo}</p>
+                <p><strong>Email:</strong> ${usuarioLogado.email}</p>
+                <p><strong>CEP:</strong> ${usuarioLogado.cep}</p>
+            `;
+        }
+
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
+        }
+
+        function fecharModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function logout() {
+            usuarioLogado = null;
+            document.getElementById('systemPage').style.display = 'none';
+            document.getElementById('landingPage').style.display = 'block';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginSenha').value = '';
+        }
+
+        // Inicializar
+        carregarLogo();
+        testarConexao();
+        
+        // Testar conexão a cada 10 segundos
+        setInterval(testarConexao, 10000);
+    </script>
 </body>
 </html>
