@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarbershopSystem — Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul-escuro: #0a1a2f;
+            --azul-medio: #1a2a4f;
+            --azul-accent: #2563eb;
+            --azul-light: #dbeafe;
+            --cinza-escuro: #2c2c2c;
+            --cinza-medio: #64748b;
+            --cinza-claro: #e2e8f0;
+            --branco: #ffffff;
+            --fundo: #f1f5f9;
+            --sidebar-w: 260px;
+            --verde: #10b981;
+            --amarelo: #f59e0b;
+            --vermelho: #ef4444;
+            --roxo: #8b5cf6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--fundo);
+            color: var(--cinza-escuro);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--azul-escuro);
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--azul-accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .logo-name {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--branco);
+        }
+
+        .logo-name span {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .sidebar-user {
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--azul-accent), var(--roxo));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .user-meta strong {
+            display: block;
+            color: white;
+            font-size: 0.85rem;
+        }
+
+        .user-meta small {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.72rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            padding: 8px 12px 6px;
+            margin-top: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: rgba(255,255,255,0.55);
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.18s;
+            width: 100%;
+            background: none;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.07);
+            color: rgba(255,255,255,0.85);
+        }
+
+        .nav-item.active {
+            background: var(--azul-accent);
+            color: white;
+        }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: rgba(255,255,255,0.45);
+            cursor: pointer;
+            width: 100%;
+            background: none;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239,68,68,0.15);
+            color: #fca5a5;
+        }
+
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--cinza-claro);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-left h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+        }
+
+        .topbar-left p {
+            font-size: 0.8rem;
+            color: var(--cinza-medio);
+        }
+
+        .topbar-right {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .topbar-date {
+            font-size: 0.8rem;
+            color: var(--cinza-medio);
+            background: var(--fundo);
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .btn-novo {
+            background: var(--azul-accent);
+            color: white;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            width: auto;
+        }
+
+        .btn-novo:hover {
+            background: #1d4ed8;
+        }
+
+        .content {
+            padding: 28px 32px;
+            flex: 1;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 26px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1px solid var(--cinza-claro);
+            position: relative;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .kpi-card.azul::before { background: var(--azul-accent); }
+        .kpi-card.verde::before { background: var(--verde); }
+        .kpi-card.amarelo::before { background: var(--amarelo); }
+        .kpi-card.roxo::before { background: var(--roxo); }
+
+        .kpi-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--azul-escuro);
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid var(--cinza-claro);
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        .card-header {
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+        }
+
+        .card-body {
+            padding: 18px 22px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+
+        .data-table th {
+            background: var(--fundo);
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+
+        .data-table tr:hover {
+            background: var(--fundo);
+        }
+
+        .status-badge {
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .status-ativo { background: #ecfdf5; color: #059669; }
+        .status-inativo { background: #fef2f2; color: #dc2626; }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar input,
+        .filter-bar select {
+            width: auto;
+            padding: 8px 12px;
+            border: 1px solid var(--cinza-claro);
+            border-radius: 8px;
+        }
+
+        .btn-editar, .btn-deletar, .btn-save {
+            padding: 5px 12px;
+            margin: 0 3px;
+            width: auto;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-editar { background: var(--verde); color: white; }
+        .btn-deletar { background: var(--vermelho); color: white; }
+        .btn-save { background: var(--azul-accent); color: white; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--cinza-claro);
+            border-radius: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .message.success {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        @media (max-width: 1000px) {
+            .kpi-grid { grid-template-columns: repeat(2,1fr); }
+            .sidebar { width: 70px; }
+            .sidebar-logo .logo-name, .sidebar-user .user-meta, .nav-item span:not(.nav-icon) { display: none; }
+            .main { margin-left: 70px; }
+            .nav-item { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">✂️</div>
+        <div class="logo-name">Barbershop<span>System</span></div>
+    </div>
+    <div class="sidebar-user">
+        <div class="user-avatar" id="sidebarAvatar">JO</div>
+        <div class="user-meta">
+            <strong id="sidebarNome">Carregando...</strong>
+            <small>Administrador</small>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Principal</div>
+        <button class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">🏠</span> <span>Dashboard</span></button>
+        <button class="nav-item" onclick="showPage('usuarios')"><span class="nav-icon">👤</span> <span>Usuários</span></button>
+        <button class="nav-item" onclick="showPage('servicos')"><span class="nav-icon">✂️</span> <span>Serviços</span></button>
+        <button class="nav-item" onclick="showPage('funcionarios')"><span class="nav-icon">💈</span> <span>Funcionários</span></button>
+        <button class="nav-item" onclick="showPage('agendamentos')"><span class="nav-icon">📅</span> <span>Agendamentos</span></button>
+        <div class="nav-section-label">Sistema</div>
+        <button class="nav-item" onclick="showPage('configuracoes')"><span class="nav-icon">⚙️</span> <span>Configurações</span></button>
+    </nav>
+    <div class="sidebar-footer">
+        <button class="btn-logout" onclick="fazerLogout()"><span>🚪</span> <span>Sair</span></button>
+    </div>
+</aside>
+
+<main class="main">
+    <div class="topbar">
+        <div class="topbar-left">
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="pageSubtitle">Visão geral do negócio</p>
+        </div>
+        <div class="topbar-right">
+            <div class="topbar-date" id="dataHoje"></div>
+            <button class="btn-novo" id="actionButton" onclick="acaoPrincipal()">➕ Novo</button>
+        </div>
+    </div>
+    <div class="content" id="mainContent"></div>
+</main>
+
+<div class="modal" id="modal"><div class="modal-content" id="modalContent"></div></div>
+
+<script>
+    const API_URL = 'http://localhost:3000';
+    let currentPage = 'dashboard';
+
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuario') || '{"nome":"Usuário","email":"usuario@email.com"}');
+
+    // ================= FUNÇÕES DE API =================
+    async function apiGet(endpoint) {
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`);
+            if (!response.ok) throw new Error('Erro na requisição');
+            return await response.json();
+        } catch (error) {
+            console.error('Erro:', error);
+            return [];
+        }
+    }
+
+    async function apiPost(endpoint, data) {
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Erro:', error);
+            return { error: 'Erro de conexão' };
+        }
+    }
+
+    async function apiPut(endpoint, data) {
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Erro:', error);
+            return { error: 'Erro de conexão' };
+        }
+    }
+
+    async function apiDelete(endpoint) {
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                method: 'DELETE'
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Erro:', error);
+            return { error: 'Erro de conexão' };
+        }
+    }
+
+    function inicializar() {
+        document.getElementById('sidebarNome').textContent = usuarioLogado.nome || 'Usuário';
+        const iniciais = (usuarioLogado.nome || 'U').split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase();
+        document.getElementById('sidebarAvatar').textContent = iniciais;
+        document.getElementById('dataHoje').textContent = '📅 ' + new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
+        showPage('dashboard');
+    }
+
+    function showPage(page) {
+        currentPage = page;
+        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+        event.target.closest('.nav-item').classList.add('active');
+
+        const titles = {
+            dashboard:'Dashboard', usuarios:'Usuários', servicos:'Serviços',
+            funcionarios:'Funcionários', agendamentos:'Agendamentos', configuracoes:'Configurações'
+        };
+        document.getElementById('pageTitle').textContent = titles[page] || page;
+       
+        const actionBtn = document.getElementById('actionButton');
+        if (page === 'usuarios') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Usuário'; }
+        else if (page === 'servicos') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Serviço'; }
+        else if (page === 'funcionarios') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Funcionário'; }
+        else if (page === 'agendamentos') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Agendamento'; }
+        else { actionBtn.style.display = 'none'; }
+
+        renderPage();
+    }
+
+    async function renderPage() {
+        const container = document.getElementById('mainContent');
+        if (currentPage === 'dashboard') container.innerHTML = await renderDashboard();
+        else if (currentPage === 'usuarios') container.innerHTML = await renderUsuarios();
+        else if (currentPage === 'servicos') container.innerHTML = await renderServicos();
+        else if (currentPage === 'funcionarios') container.innerHTML = await renderFuncionarios();
+        else if (currentPage === 'agendamentos') container.innerHTML = await renderAgendamentos();
+        else if (currentPage === 'configuracoes') container.innerHTML = renderConfiguracoes();
+    }
+
+    async function renderDashboard() {
+        const usuarios = await apiGet('/buscar');
+        const servicos = await apiGet('/servicos');
+       
+        return `
+            <div class="kpi-grid">
+                <div class="kpi-card azul"><div class="kpi-value">${usuarios.length}</div><div>Total Usuários</div></div>
+                <div class="kpi-card verde"><div class="kpi-value">${servicos.length}</div><div>Total Serviços</div></div>
+                <div class="kpi-card amarelo"><div class="kpi-value">8</div><div>Agendamentos Hoje</div></div>
+                <div class="kpi-card roxo"><div class="kpi-value">R$ 47</div><div>Ticket Médio</div></div>
+            </div>
+            <div class="card"><div class="card-header"><div class="card-title">📋 Últimos Usuários Cadastrados</div></div><div class="card-body">
+                ${usuarios.slice(0,5).map(u => `
+                    <div style="padding:10px 0; border-bottom:1px solid var(--cinza-claro); display:flex; justify-content:space-between">
+                        <span>${u.nome_completo}</span>
+                        <span>${u.email}</span>
+                        <span>${u.primeiro_acesso ? '⚠️ Primeiro acesso' : '✅ Ativo'}</span>
+                    </div>
+                `).join('') || '<p>Nenhum usuário cadastrado</p>'}
+            </div></div>
+        `;
+    }
+
+    // ================= USUÁRIOS =================
+    async function renderUsuarios() {
+        const usuarios = await apiGet('/buscar');
+        return `
+            <div class="filter-bar"><input type="text" id="buscaUsuario" placeholder="Buscar usuário..." onkeyup="filtrarUsuarios()"></div>
+            <div class="card"><div class="card-header"><div class="card-title">👤 Usuários do Sistema</div></div><div class="card-body">
+                <table class="data-table" id="tabelaUsuarios"><thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>CEP</th><th>Status</th><th>Ações</th></tr></thead>
+                <tbody>${usuarios.map(u => `
+                    <tr>
+                        <td>${u.id_usuario}</td>
+                        <td>${u.nome_completo}</td>
+                        <td>${u.email}</td>
+                        <td>${u.cep}</td>
+                        <td>${u.primeiro_acesso ? '⚠️ Primeiro acesso' : '✅ Ativo'}</td>
+                        <td><button class="btn-editar" onclick="editarUsuario(${u.id_usuario})">Editar</button><button class="btn-deletar" onclick="deletarUsuario(${u.id_usuario})">Excluir</button></td>
+                    </tr>
+                `).join('')}</tbody>
+                </table>
+            </div></div>
+        `;
+    }
+
+    function filtrarUsuarios() {
+        const busca = document.getElementById('buscaUsuario')?.value.toLowerCase() || '';
+        const rows = document.querySelectorAll('#tabelaUsuarios tbody tr');
+        rows.forEach(row => {
+            const nome = row.cells[1]?.textContent.toLowerCase() || '';
+            row.style.display = nome.includes(busca) ? '' : 'none';
+        });
+    }
+
+    function abrirModalUsuario(data = null) {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `
+            <h3>${data ? 'Editar' : 'Novo'} Usuário</h3>
+            <div class="form-group"><label>Nome Completo *</label><input type="text" id="usuarioNome" value="${data ? data.nome_completo : ''}"></div>
+            <div class="form-group"><label>Email *</label><input type="email" id="usuarioEmail" value="${data ? data.email : ''}"></div>
+            <div class="form-group"><label>CEP *</label><input type="text" id="usuarioCep" value="${data ? data.cep : ''}"></div>
+            <div class="form-group"><label>Senha ${data ? '(deixe em branco para manter)' : '(opcional)'}</label><input type="password" id="usuarioSenha" placeholder="********"></div>
+            <button class="btn-save" onclick="salvarUsuario(${data ? data.id_usuario : 'null'})">Salvar</button>
+        `;
+        modal.style.display = 'flex';
+    }
+
+    async function salvarUsuario(id) {
+        const dados = {
+            nome_completo: document.getElementById('usuarioNome').value,
+            email: document.getElementById('usuarioEmail').value,
+            cep: document.getElementById('usuarioCep').value,
+            senha: document.getElementById('usuarioSenha').value || ''
+        };
+       
+        if (!dados.nome_completo || !dados.email || !dados.cep) {
+            alert('Preencha todos os campos obrigatórios');
+            return;
+        }
+       
+        const result = id ? await apiPut('/atualizar', { id_usuario: id, ...dados }) : await apiPost('/cadastrar', dados);
+        alert(result.mensagem || (result.error || 'Operação realizada'));
+        fecharModal();
+        renderPage();
+    }
+
+    async function editarUsuario(id) {
+        const usuarios = await apiGet('/buscar');
+        const usuario = usuarios.find(u => u.id_usuario === id);
+        abrirModalUsuario(usuario);
+    }
+
+    async function deletarUsuario(id) {
+        if(confirm('Tem certeza que deseja excluir este usuário?')) {
+            const result = await apiDelete(`/deletar`, { id_usuario: id });
+            alert(result.mensagem);
+            renderPage();
+        }
+    }
+
+    // ================= SERVIÇOS (integrados com backend) =================
+    async function renderServicos() {
+        const servicos = await apiGet('/servicos');
+        return `
+            <div class="filter-bar"><input type="text" id="buscaServico" placeholder="Buscar serviço..." onkeyup="filtrarServicos()"></div>
+            <div class="card"><div class="card-header"><div class="card-title">✂️ Serviços</div></div><div class="card-body">
+                <table class="data-table" id="tabelaServicos"><thead><tr><th>ID</th><th>Serviço</th><th>Preço</th><th>Duração</th><th>Pontos</th><th>Status</th><th>Ações</th></tr></thead>
+                <tbody>${servicos.map(s => `
+                    <tr>
+                        <td>${s.id_servicos}</td>
+                        <td>${s.nome}</td>
+                        <td>R$ ${parseFloat(s.preco).toFixed(2)}</td>
+                        <td>${s.duracao}min</td>
+                        <td>${s.pontos}</td>
+                        <td><span class="status-badge ${s.status == 1 ? 'status-ativo' : 'status-inativo'}">${s.status == 1 ? 'Ativo' : 'Inativo'}</span></td>
+                        <td><button class="btn-editar" onclick="editarServico(${s.id_servicos})">Editar</button><button class="btn-deletar" onclick="deletarServico(${s.id_servicos})">Excluir</button></td>
+                    </tr>
+                `).join('')}</tbody>
+                </table>
+            </div></div>
+        `;
+    }
+
+    function filtrarServicos() {
+        const busca = document.getElementById('buscaServico')?.value.toLowerCase() || '';
+        const rows = document.querySelectorAll('#tabelaServicos tbody tr');
+        rows.forEach(row => {
+            const nome = row.cells[1]?.textContent.toLowerCase() || '';
+            row.style.display = nome.includes(busca) ? '' : 'none';
+        });
+    }
+
+    function abrirModalServico(data = null) {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `
+            <h3>${data ? 'Editar' : 'Novo'} Serviço</h3>
+            <div class="form-group"><label>Nome *</label><input type="text" id="servicoNome" value="${data ? data.nome : ''}"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Preço *</label><input type="number" id="servicoPreco" step="0.01" value="${data ? data.preco : ''}"></div>
+                <div class="form-group"><label>Duração (min) *</label><input type="number" id="servicoDuracao" value="${data ? data.duracao : ''}"></div>
+            </div>
+            <div class="form-group"><label>Pontos de Fidelidade</label><input type="number" id="servicoPontos" value="${data ? data.pontos : 0}"></div>
+            ${data ? `<div class="form-group"><label>Status</label><select id="servicoStatus"><option value="1" ${data.status == 1 ? 'selected' : ''}>Ativo</option><option value="0" ${data.status == 0 ? 'selected' : ''}>Inativo</option></select></div>` : ''}
+            <button class="btn-save" onclick="salvarServico(${data ? data.id_servicos : 'null'})">Salvar</button>
+        `;
+        modal.style.display = 'flex';
+    }
+
+    async function salvarServico(id) {
+        const dados = {
+            nome: document.getElementById('servicoNome').value,
+            preco: parseFloat(document.getElementById('servicoPreco').value),
+            duracao: parseInt(document.getElementById('servicoDuracao').value),
+            pontos: parseInt(document.getElementById('servicoPontos').value) || 0
+        };
+       
+        if (id) {
+            dados.status = parseInt(document.getElementById('servicoStatus')?.value || 1);
+            const result = await apiPut(`/servicos/${id}`, dados);
+            alert(result.mensagem || (result.error || 'Operação realizada'));
+        } else {
+            const result = await apiPost('/servicos', dados);
+            alert(result.mensagem || (result.error || 'Operação realizada'));
+        }
+        fecharModal();
+        renderPage();
+    }
+
+    async function editarServico(id) {
+        const servicos = await apiGet(`/servicos/${id}`);
+        abrirModalServico(servicos);
+    }
+
+    async function deletarServico(id) {
+        if(confirm('Tem certeza que deseja excluir este serviço?')) {
+            const result = await apiDelete(`/servicos/${id}`);
+            alert(result.mensagem);
+            renderPage();
+        }
+    }
+
+    // ================= FUNCIONÁRIOS (mockado) =================
+    let funcionariosMock = [
+        { id: 1, nome: 'João Silva', funcao: 'Barbeiro Especialista' },
+        { id: 2, nome: 'Pedro Souza', funcao: 'Barbeiro Master' },
+        { id: 3, nome: 'Gustavo Lima', funcao: 'Estilista' }
+    ];
+
+    async function renderFuncionarios() {
+        return `
+            <div class="card"><div class="card-header"><div class="card-title">💈 Funcionários</div></div><div class="card-body">
+                <table class="data-table"><thead><tr><th>ID</th><th>Nome</th><th>Função</th><th>Ações</th></tr></thead>
+                <tbody>${funcionariosMock.map(f => `
+                    <tr>
+                        <td>${f.id}</td>
+                        <td>${f.nome}</td>
+                        <td>${f.funcao}</td>
+                        <td><button class="btn-editar" onclick="editarFuncionario(${f.id})">Editar</button><button class="btn-deletar" onclick="deletarFuncionario(${f.id})">Excluir</button></td>
+                    </tr>
+                `).join('')}</tbody>
+                </table>
+            </div></div>
+        `;
+    }
+
+    function abrirModalFuncionario(data = null) {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `
+            <h3>${data ? 'Editar' : 'Novo'} Funcionário</h3>
+            <div class="form-group"><label>Nome</label><input type="text" id="funcionarioNome" value="${data ? data.nome : ''}"></div>
+            <div class="form-group"><label>Função</label><input type="text" id="funcionarioFuncao" value="${data ? data.funcao : ''}"></div>
+            <button class="btn-save" onclick="salvarFuncionario(${data ? data.id : 'null'})">Salvar</button>
+        `;
+        modal.style.display = 'flex';
+    }
+
+    function salvarFuncionario(id) {
+        const dados = {
+            nome: document.getElementById('funcionarioNome').value,
+            funcao: document.getElementById('funcionarioFuncao').value
+        };
+       
+        if (id) {
+            const index = funcionariosMock.findIndex(f => f.id === id);
+            if (index !== -1) funcionariosMock[index] = { ...funcionariosMock[index], ...dados };
+        } else {
+            const novoId = Math.max(...funcionariosMock.map(f => f.id), 0) + 1;
+            funcionariosMock.push({ id: novoId, ...dados });
+        }
+        alert('Funcionário salvo com sucesso!');
+        fecharModal();
+        renderPage();
+    }
+
+    function editarFuncionario(id) {
+        const funcionario = funcionariosMock.find(f => f.id === id);
+        abrirModalFuncionario(funcionario);
+    }
+
+    function deletarFuncionario(id) {
+        if(confirm('Tem certeza?')) {
+            funcionariosMock = funcionariosMock.filter(f => f.id !== id);
+            alert('Funcionário excluído!');
+            renderPage();
+        }
+    }
+
+    // ================= AGENDAMENTOS (mockado) =================
+    let agendamentosMock = [
+        { id: 1, data: '2024-04-28', horario: '09:00', cliente: 'Carlos Mendes', servico: 'Corte + Barba', funcionario: 'João Silva', status: 'confirmado' },
+        { id: 2, data: '2024-04-28', horario: '10:30', cliente: 'Rafael Lima', servico: 'Corte', funcionario: 'Pedro Souza', status: 'concluido' },
+        { id: 3, data: '2024-04-29', horario: '14:00', cliente: 'Lucas Ferreira', servico: 'Barba', funcionario: 'João Silva', status: 'agendado' }
+    ];
+
+    async function renderAgendamentos() {
+        const servicos = await apiGet('/servicos');
+        return `
+            <div class="filter-bar">
+                <input type="date" id="filtroData" placeholder="Filtrar por data">
+                <select id="filtroStatus"><option value="">Todos</option><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select>
+                <button class="btn-novo" style="width:auto;padding:8px 16px" onclick="filtrarAgendamentos()">Filtrar</button>
+            </div>
+            <div class="card"><div class="card-header"><div class="card-title">📅 Lista de Agendamentos</div></div><div class="card-body">
+                <table class="data-table" id="tabelaAgendamentos"><thead><tr><th>Data</th><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Funcionário</th><th>Status</th><th>Ações</th></tr></thead>
+                <tbody>${agendamentosMock.map(a => `
+                    <tr>
+                        <td>${a.data}</td>
+                        <td>${a.horario}</td>
+                        <td>${a.cliente}</td>
+                        <td>${a.servico}</td>
+                        <td>${a.funcionario}</td>
+                        <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+                        <td><button class="btn-editar" onclick="editarAgendamento(${a.id})">Editar</button><button class="btn-deletar" onclick="deletarAgendamento(${a.id})">Excluir</button></td>
+                    </tr>
+                `).join('')}</tbody>
+                </table>
+            </div></div>
+        `;
+    }
+
+    function filtrarAgendamentos() {
+        const data = document.getElementById('filtroData')?.value || '';
+        const status = document.getElementById('filtroStatus')?.value || '';
+        const rows = document.querySelectorAll('#tabelaAgendamentos tbody tr');
+       
+        rows.forEach(row => {
+            let show = true;
+            if (data && !row.cells[0].textContent.includes(data)) show = false;
+            if (status && !row.cells[5].textContent.includes(status)) show = false;
+            row.style.display = show ? '' : 'none';
+        });
+    }
+
+    function abrirModalAgendamento(data = null) {
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modalContent');
+       
+        modalContent.innerHTML = `
+            <h3>${data ? 'Editar' : 'Novo'} Agendamento</h3>
+            <div class="form-group"><label>Cliente</label><input type="text" id="agendamentoCliente" placeholder="Nome do cliente" value="${data ? data.cliente : ''}"></div>
+            <div class="form-group"><label>Serviço</label><input type="text" id="agendamentoServico" placeholder="Serviço" value="${data ? data.servico : ''}"></div>
+            <div class="form-group"><label>Funcionário</label><input type="text" id="agendamentoFuncionario" placeholder="Funcionário" value="${data ? data.funcionario : ''}"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Data</label><input type="date" id="agendamentoData" value="${data ? data.data : ''}"></div>
+                <div class="form-group"><label>Horário</label><input type="time" id="agendamentoHorario" value="${data ? data.horario : ''}"></div>
+            </div>
+            <div class="form-group"><label>Status</label>
+                <select id="agendamentoStatus">
+                    <option value="agendado" ${data && data.status === 'agendado' ? 'selected' : ''}>Agendado</option>
+                    <option value="confirmado" ${data && data.status === 'confirmado' ? 'selected' : ''}>Confirmado</option>
+                    <option value="concluido" ${data && data.status === 'concluido' ? 'selected' : ''}>Concluído</option>
+                    <option value="cancelado" ${data && data.status === 'cancelado' ? 'selected' : ''}>Cancelado</option>
+                </select>
+            </div>
+            <button class="btn-save" onclick="salvarAgendamento(${data ? data.id : 'null'})">Salvar</button>
+        `;
+        modal.style.display = 'flex';
+    }
+
+    function salvarAgendamento(id) {
+        const dados = {
+            cliente: document.getElementById('agendamentoCliente').value,
+            servico: document.getElementById('agendamentoServico').value,
+            funcionario: document.getElementById('agendamentoFuncionario').value,
+            data: document.getElementById('agendamentoData').value,
+            horario: document.getElementById('agendamentoHorario').value,
+            status: document.getElementById('agendamentoStatus').value
+        };
+       
+        if (!dados.cliente || !dados.servico || !dados.data) {
+            alert('Preencha todos os campos obrigatórios');
+            return;
+        }
+       
+        if (id) {
+            const index = agendamentosMock.findIndex(a => a.id === id);
+            if (index !== -1) agendamentosMock[index] = { ...agendamentosMock[index], ...dados };
+        } else {
+            const novoId = Math.max(...agendamentosMock.map(a => a.id), 0) + 1;
+            agendamentosMock.push({ id: novoId, ...dados });
+        }
+        alert('Agendamento salvo com sucesso!');
+        fecharModal();
+        renderPage();
+    }
+
+    function editarAgendamento(id) {
+        const agendamento = agendamentosMock.find(a => a.id === id);
+        abrirModalAgendamento(agendamento);
+    }
+
+    function deletarAgendamento(id) {
+        if(confirm('Tem certeza?')) {
+            agendamentosMock = agendamentosMock.filter(a => a.id !== id);
+            alert('Agendamento excluído!');
+            renderPage();
+        }
+    }
+
+    function renderConfiguracoes() {
+        return `<div class="card"><div class="card-header"><div class="card-title">⚙️ Configurações</div></div><div class="card-body">
+            <h4>Meu Perfil</h4>
+            <p><strong>Nome:</strong> ${usuarioLogado.nome}</p>
+            <p><strong>Email:</strong> ${usuarioLogado.email}</p>
+            <p><strong>CEP:</strong> ${usuarioLogado.cep || 'Não informado'}</p>
+            <button class="btn-novo" style="width:auto;margin-top:16px" onclick="alert('Edição de perfil em breve')">Editar Perfil</button>
+        </div></div>`;
+    }
+
+    function acaoPrincipal() {
+        if(currentPage === 'usuarios') abrirModalUsuario();
+        else if(currentPage === 'servicos') abrirModalServico();
+        else if(currentPage === 'funcionarios') abrirModalFuncionario();
+        else if(currentPage === 'agendamentos') abrirModalAgendamento();
+    }
+
+    function fecharModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function fazerLogout() {
+        if(confirm('Deseja sair do sistema?')) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario');
+            window.location.href = 'index.html';
+        }
+    }
+
+    inicializar();
+</script>
+</body>
+</html>

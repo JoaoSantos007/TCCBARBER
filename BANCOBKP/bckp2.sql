@@ -1,4 +1,26 @@
--- --------------------------------------------------------
+-- Inserir serviços padrão
+INSERT INTO `servicos` (`id_servicos`, `nome`, `preco`, `duracao`, `pontos`) VALUES
+(1, 'Corte Masculino', 35.00, 30, 10),
+(2, 'Barba Completa', 40.00, 30, 10),
+(3, 'Corte + Barba', 65.00, 60, 20),
+(4, 'Corte + Platinado', 90.00, 90, 25),
+(5, 'Sobrancelha', 20.00, 15, 5),
+(6, 'Hidratação Capilar', 50.00, 45, 15);
+
+-- Inserir funcionários/barbeiros
+INSERT INTO `funcionario` (`id_funcionario`, `nome`, `funcao`) VALUES
+(1, 'Carlos Silva', 'Barbeiro Master'),
+(2, 'Rafael Oliveira', 'Barbeiro Especialista'),
+(3, 'Pedro Santos', 'Barbeiro Junior'),
+(4, 'Lucas Ferreira', 'Barbeiro Sênior');
+
+-- Inserir alguns agendamentos de exemplo (para teste)
+INSERT INTO `agendamentos` (`id_usuario`, `id_funcionario`, `id_servicos`, `data`, `status`) VALUES
+(3, 1, 1, DATE_ADD(NOW(), INTERVAL 1 HOUR), 'confirmado'),
+(3, 2, 2, DATE_ADD(NOW(), INTERVAL 2 HOUR), 'confirmado'),
+(3, 1, 3, DATE_ADD(NOW(), INTERVAL 1 DAY), 'aguardando'),
+(3, 3, 4, DATE_ADD(NOW(), INTERVAL 2 DAY), 'confirmado'),
+(3, 2, 5, DATE_ADD(NOW(), INTERVAL -1 DAY), 'concluido');barbearia_db-- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
 -- Versão do servidor:           10.4.32-MariaDB - mariadb.org binary distribution
 -- OS do Servidor:               Win64
