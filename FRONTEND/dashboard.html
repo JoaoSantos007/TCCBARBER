@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BarbershopSystem — Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
     <style>
         :root {
             --azul-escuro: #0a1a2f;
             --azul-medio: #1a2a4f;
             --azul-accent: #2563eb;
             --azul-light: #dbeafe;
-            --cinza-escuro: #2c2c2c;
+            --cinza-escuro: #1e293b;
             --cinza-medio: #64748b;
             --cinza-claro: #e2e8f0;
             --branco: #ffffff;
             --fundo: #f1f5f9;
-            --sidebar-w: 260px;
+            --sidebar-w: 264px;
             --verde: #10b981;
             --amarelo: #f59e0b;
             --vermelho: #ef4444;
             --roxo: #8b5cf6;
+            --topbar-h: 68px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,35 +34,34 @@
             min-height: 100vh;
         }
 
+        /* =========== SIDEBAR =========== */
         .sidebar {
             width: var(--sidebar-w);
             background: var(--azul-escuro);
             min-height: 100vh;
             position: fixed;
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             display: flex;
             flex-direction: column;
             z-index: 100;
+            border-right: 1px solid rgba(255,255,255,0.05);
         }
 
         .sidebar-logo {
-            padding: 28px 24px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 24px 20px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px;
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--azul-accent);
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--azul-accent), #7c3aed);
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
         }
 
         .logo-name {
@@ -69,382 +69,280 @@
             font-weight: 800;
             font-size: 1rem;
             color: var(--branco);
+            line-height: 1.1;
         }
-
         .logo-name span {
             display: block;
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             font-weight: 400;
-            color: rgba(255,255,255,0.45);
+            color: rgba(255,255,255,0.38);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .sidebar-user {
-            padding: 20px 24px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            display: flex; align-items: center; gap: 11px;
         }
-
         .user-avatar {
-            width: 38px;
-            height: 38px;
+            width: 36px; height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--azul-accent), var(--roxo));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: white;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.8rem; color: white;
+            flex-shrink: 0;
         }
+        .user-meta strong { display: block; color: white; font-size: 0.82rem; }
+        .user-meta small { color: rgba(255,255,255,0.38); font-size: 0.7rem; }
 
-        .user-meta strong {
-            display: block;
-            color: white;
-            font-size: 0.85rem;
-        }
-
-        .user-meta small {
-            color: rgba(255,255,255,0.4);
-            font-size: 0.72rem;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 16px 12px;
-            overflow-y: auto;
-        }
-
+        .sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
         .nav-section-label {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
-            padding: 8px 12px 6px;
-            margin-top: 8px;
+            font-size: 0.6rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.25);
+            padding: 10px 12px 6px; margin-top: 4px;
         }
-
         .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            color: rgba(255,255,255,0.55);
-            font-size: 0.88rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.18s;
-            width: 100%;
-            background: none;
-            border: none;
-            font-family: 'DM Sans', sans-serif;
-            text-align: left;
+            display: flex; align-items: center; gap: 11px;
+            padding: 9px 12px; border-radius: 9px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.86rem; font-weight: 500;
+            cursor: pointer; transition: all 0.16s;
+            width: 100%; background: none; border: none;
+            font-family: 'DM Sans', sans-serif; text-align: left;
         }
+        .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.82); }
+        .nav-item.active { background: var(--azul-accent); color: white; box-shadow: 0 4px 14px rgba(37,99,235,0.35); }
+        .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
 
-        .nav-item:hover {
-            background: rgba(255,255,255,0.07);
-            color: rgba(255,255,255,0.85);
-        }
-
-        .nav-item.active {
-            background: var(--azul-accent);
-            color: white;
-        }
-
-        .sidebar-footer {
-            padding: 16px 12px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-        }
-
+        .sidebar-footer { padding: 12px 10px; border-top: 1px solid rgba(255,255,255,0.07); }
         .btn-logout {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            color: rgba(255,255,255,0.45);
-            cursor: pointer;
-            width: 100%;
-            background: none;
-            border: none;
-            font-family: 'DM Sans', sans-serif;
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 12px; border-radius: 9px;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer; width: 100%; background: none; border: none;
+            font-family: 'DM Sans', sans-serif; font-size: 0.86rem; font-weight: 500;
+            transition: all 0.16s;
         }
+        .btn-logout:hover { background: rgba(239,68,68,0.12); color: #fca5a5; }
 
-        .btn-logout:hover {
-            background: rgba(239,68,68,0.15);
-            color: #fca5a5;
-        }
-
-        .main {
-            margin-left: var(--sidebar-w);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+        /* =========== MAIN =========== */
+        .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
         .topbar {
-            background: white;
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: white; padding: 0 32px; height: var(--topbar-h);
+            display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--cinza-claro);
-            position: sticky;
-            top: 0;
-            z-index: 50;
+            position: sticky; top: 0; z-index: 50;
         }
-
-        .topbar-left h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--azul-escuro);
-        }
-
-        .topbar-left p {
-            font-size: 0.8rem;
-            color: var(--cinza-medio);
-        }
-
-        .topbar-right {
-            display: flex;
-            gap: 14px;
-            align-items: center;
-        }
-
+        .topbar-left h1 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--azul-escuro); }
+        .topbar-left p { font-size: 0.77rem; color: var(--cinza-medio); margin-top: 1px; }
+        .topbar-right { display: flex; gap: 12px; align-items: center; }
         .topbar-date {
-            font-size: 0.8rem;
-            color: var(--cinza-medio);
-            background: var(--fundo);
-            padding: 6px 14px;
-            border-radius: 20px;
+            font-size: 0.78rem; color: var(--cinza-medio);
+            background: var(--fundo); padding: 6px 13px;
+            border-radius: 20px; border: 1px solid var(--cinza-claro);
         }
-
         .btn-novo {
-            background: var(--azul-accent);
-            color: white;
-            border: none;
-            padding: 9px 20px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            width: auto;
+            background: var(--azul-accent); color: white; border: none;
+            padding: 9px 18px; border-radius: 9px;
+            font-size: 0.84rem; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; gap: 7px;
+            transition: background 0.15s, transform 0.1s;
+            font-family: 'DM Sans', sans-serif;
         }
+        .btn-novo:hover { background: #1d4ed8; }
+        .btn-novo:active { transform: scale(0.97); }
 
-        .btn-novo:hover {
-            background: #1d4ed8;
-        }
+        .content { padding: 28px 32px; flex: 1; }
 
-        .content {
-            padding: 28px 32px;
-            flex: 1;
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-bottom: 26px;
-        }
-
+        /* =========== KPI CARDS =========== */
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
         .kpi-card {
-            background: white;
-            border-radius: 14px;
-            padding: 22px;
-            border: 1px solid var(--cinza-claro);
-            position: relative;
+            background: white; border-radius: 14px; padding: 20px 22px;
+            border: 1px solid var(--cinza-claro); position: relative; overflow: hidden;
+            transition: box-shadow 0.2s, transform 0.2s;
         }
-
+        .kpi-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.07); transform: translateY(-2px); }
         .kpi-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            border-radius: 14px 14px 0 0;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0;
         }
-
         .kpi-card.azul::before { background: var(--azul-accent); }
         .kpi-card.verde::before { background: var(--verde); }
         .kpi-card.amarelo::before { background: var(--amarelo); }
         .kpi-card.roxo::before { background: var(--roxo); }
-
-        .kpi-value {
-            font-family: 'Syne', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--azul-escuro);
+        .kpi-card-icon {
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; margin-bottom: 12px;
         }
+        .kpi-card.azul .kpi-card-icon { background: #eff6ff; }
+        .kpi-card.verde .kpi-card-icon { background: #f0fdf4; }
+        .kpi-card.amarelo .kpi-card-icon { background: #fffbeb; }
+        .kpi-card.roxo .kpi-card-icon { background: #f5f3ff; }
+        .kpi-value { font-family: 'Syne', sans-serif; font-size: 1.85rem; font-weight: 800; color: var(--azul-escuro); line-height: 1; }
+        .kpi-label { font-size: 0.78rem; color: var(--cinza-medio); margin-top: 5px; font-weight: 500; }
+        .kpi-sub { font-size: 0.72rem; color: var(--verde); margin-top: 3px; font-weight: 600; }
 
-        .card {
-            background: white;
-            border-radius: 14px;
-            border: 1px solid var(--cinza-claro);
-            overflow: hidden;
-            margin-bottom: 18px;
-        }
-
+        /* =========== CARDS =========== */
+        .card { background: white; border-radius: 14px; border: 1px solid var(--cinza-claro); overflow: hidden; margin-bottom: 18px; }
         .card-header {
-            padding: 18px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--cinza-claro);
         }
+        .card-title { font-family: 'Syne', sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--azul-escuro); }
+        .card-body { padding: 18px 20px; }
 
-        .card-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--azul-escuro);
-        }
+        /* =========== TABLE =========== */
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th, .data-table td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--cinza-claro); font-size: 0.84rem; }
+        .data-table th { background: var(--fundo); font-weight: 600; color: var(--azul-escuro); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tbody tr:hover { background: #fafbfc; }
+        .data-table td { color: var(--cinza-escuro); }
 
-        .card-body {
-            padding: 18px 22px;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--cinza-claro);
-        }
-
-        .data-table th {
-            background: var(--fundo);
-            font-weight: 600;
-            color: var(--azul-escuro);
-        }
-
-        .data-table tr:hover {
-            background: var(--fundo);
-        }
-
+        /* =========== BADGES =========== */
         .status-badge {
-            font-size: 0.68rem;
-            font-weight: 600;
-            padding: 3px 9px;
-            border-radius: 20px;
-            display: inline-block;
+            font-size: 0.68rem; font-weight: 600; padding: 3px 10px;
+            border-radius: 20px; display: inline-block; letter-spacing: 0.02em;
         }
-
         .status-ativo { background: #ecfdf5; color: #059669; }
         .status-inativo { background: #fef2f2; color: #dc2626; }
+        .status-agendado { background: #eff6ff; color: #2563eb; }
+        .status-confirmado { background: #ecfdf5; color: #059669; }
+        .status-concluido { background: #f5f3ff; color: #7c3aed; }
+        .status-cancelado { background: #fef2f2; color: #dc2626; }
+        .status-pendente { background: #fffbeb; color: #d97706; }
 
-        .filter-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        /* =========== FILTER BAR =========== */
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+        .filter-bar input, .filter-bar select {
+            padding: 8px 12px; border: 1px solid var(--cinza-claro);
+            border-radius: 8px; font-size: 0.84rem; font-family: 'DM Sans', sans-serif;
+            background: white; color: var(--cinza-escuro); outline: none;
+            transition: border-color 0.15s;
         }
+        .filter-bar input:focus, .filter-bar select:focus { border-color: var(--azul-accent); }
 
-        .filter-bar input,
-        .filter-bar select {
-            width: auto;
-            padding: 8px 12px;
-            border: 1px solid var(--cinza-claro);
-            border-radius: 8px;
+        /* =========== ACTION BUTTONS =========== */
+        .btn-editar, .btn-deletar, .btn-save, .btn-cancel {
+            padding: 5px 12px; margin: 0 2px;
+            font-size: 0.75rem; border-radius: 6px; border: none;
+            cursor: pointer; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            transition: opacity 0.15s, transform 0.1s;
         }
+        .btn-editar:active, .btn-deletar:active { transform: scale(0.96); }
+        .btn-editar { background: #eff6ff; color: #2563eb; }
+        .btn-editar:hover { background: #dbeafe; }
+        .btn-deletar { background: #fef2f2; color: #dc2626; }
+        .btn-deletar:hover { background: #fee2e2; }
+        .btn-save { background: var(--azul-accent); color: white; padding: 10px 22px; font-size: 0.88rem; border-radius: 9px; width: 100%; margin-top: 6px; }
+        .btn-save:hover { background: #1d4ed8; }
+        .btn-cancel { background: var(--fundo); color: var(--cinza-medio); padding: 10px 22px; font-size: 0.88rem; border-radius: 9px; width: 100%; margin-top: 6px; border: 1px solid var(--cinza-claro); }
+        .btn-cancel:hover { background: var(--cinza-claro); }
 
-        .btn-editar, .btn-deletar, .btn-save {
-            padding: 5px 12px;
-            margin: 0 3px;
-            width: auto;
-            font-size: 0.75rem;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-editar { background: var(--verde); color: white; }
-        .btn-deletar { background: var(--vermelho); color: white; }
-        .btn-save { background: var(--azul-accent); color: white; }
-
+        /* =========== MODAL =========== */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10,20,40,0.55); backdrop-filter: blur(3px);
+            justify-content: center; align-items: center; z-index: 1000;
         }
-
         .modal-content {
+            background: white; padding: 28px; border-radius: 18px;
+            max-width: 500px; width: 92%; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+            animation: modalIn 0.2s ease;
+        }
+        @keyframes modalIn { from { transform: scale(0.95) translateY(8px); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+        .modal-header h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--azul-escuro); }
+        .modal-close { background: none; border: none; cursor: pointer; color: var(--cinza-medio); font-size: 1.3rem; padding: 2px 6px; border-radius: 6px; }
+        .modal-close:hover { background: var(--fundo); color: var(--cinza-escuro); }
+        .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+
+        /* =========== FORM =========== */
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.82rem; color: var(--cinza-escuro); }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 9px 12px; border: 1px solid var(--cinza-claro);
+            border-radius: 9px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+            color: var(--cinza-escuro); outline: none; transition: border-color 0.15s, box-shadow 0.15s;
             background: white;
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 90%;
         }
-
-        .modal-content h3 {
-            margin-bottom: 20px;
-            font-family: 'Syne', sans-serif;
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--azul-accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
         }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
 
-        .form-group {
-            margin-bottom: 15px;
+        /* =========== TOAST =========== */
+        #toastContainer {
+            position: fixed; bottom: 28px; right: 28px;
+            display: flex; flex-direction: column; gap: 10px; z-index: 9999; pointer-events: none;
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
+        .toast {
+            display: flex; align-items: center; gap: 10px;
+            padding: 13px 18px; border-radius: 12px;
+            font-size: 0.86rem; font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            pointer-events: all; max-width: 340px;
+            animation: toastIn 0.25s ease;
         }
+        @keyframes toastIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes toastOut { to { transform: translateY(8px); opacity: 0; } }
+        .toast.success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+        .toast.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .toast.info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+        .toast-icon { font-size: 1rem; flex-shrink: 0; }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--cinza-claro);
-            border-radius: 8px;
+        /* =========== LOADING SKELETON =========== */
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 6px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .skeleton-row td { padding: 14px 12px !important; }
+
+        /* =========== DASHBOARD EXTRAS =========== */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .user-row { padding: 11px 0; border-bottom: 1px solid var(--cinza-claro); display: flex; align-items: center; gap: 12px; }
+        .user-row:last-child { border-bottom: none; }
+        .user-row-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: white; flex-shrink: 0; }
+        .user-row-info { flex: 1; min-width: 0; }
+        .user-row-info strong { display: block; font-size: 0.84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-row-info small { color: var(--cinza-medio); font-size: 0.72rem; }
+
+        .servico-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--cinza-claro); }
+        .servico-row:last-child { border-bottom: none; }
+        .servico-row-nome { font-size: 0.84rem; font-weight: 500; }
+        .servico-row-preco { font-size: 0.84rem; font-weight: 700; color: var(--azul-accent); }
+
+        /* =========== EMPTY STATE =========== */
+        .empty-state { text-align: center; padding: 48px 20px; color: var(--cinza-medio); }
+        .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5; }
+        .empty-state p { font-size: 0.88rem; }
+
+        /* =========== CONFIG SECTION =========== */
+        .config-section { margin-bottom: 24px; }
+        .config-section h4 { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 14px; color: var(--azul-escuro); }
+        .info-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--cinza-claro); font-size: 0.86rem; }
+        .info-row:last-child { border-bottom: none; }
+        .info-row span:first-child { color: var(--cinza-medio); }
+        .info-row span:last-child { font-weight: 600; }
+
+        /* =========== RESPONSIVE =========== */
+        @media (max-width: 1100px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .dash-grid { grid-template-columns: 1fr; }
         }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        @media (max-width: 900px) {
+            .sidebar { width: 68px; }
+            .logo-name, .user-meta, .nav-item > span:last-child, .nav-section-label, .btn-logout > span:last-child { display: none !important; }
+            .main { margin-left: 68px; }
+            .nav-item { justify-content: center; padding: 10px; }
+            .content { padding: 20px 18px; }
+            .topbar { padding: 0 18px; }
         }
-
-        .message {
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-
-        .message.success {
-            background: #ecfdf5;
-            color: #059669;
-        }
-
-        .message.error {
-            background: #fef2f2;
-            color: #dc2626;
-        }
-
-        @media (max-width: 1000px) {
-            .kpi-grid { grid-template-columns: repeat(2,1fr); }
-            .sidebar { width: 70px; }
-            .sidebar-logo .logo-name, .sidebar-user .user-meta, .nav-item span:not(.nav-icon) { display: none; }
-            .main { margin-left: 70px; }
-            .nav-item { justify-content: center; }
+        @media (max-width: 600px) {
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -453,10 +351,10 @@
 <aside class="sidebar">
     <div class="sidebar-logo">
         <div class="logo-icon">✂️</div>
-        <div class="logo-name">Barbershop<span>System</span></div>
+        <div class="logo-name">Barbershop<span>System v2</span></div>
     </div>
     <div class="sidebar-user">
-        <div class="user-avatar" id="sidebarAvatar">JO</div>
+        <div class="user-avatar" id="sidebarAvatar">--</div>
         <div class="user-meta">
             <strong id="sidebarNome">Carregando...</strong>
             <small>Administrador</small>
@@ -464,16 +362,30 @@
     </div>
     <nav class="sidebar-nav">
         <div class="nav-section-label">Principal</div>
-        <button class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">🏠</span> <span>Dashboard</span></button>
-        <button class="nav-item" onclick="showPage('usuarios')"><span class="nav-icon">👤</span> <span>Usuários</span></button>
-        <button class="nav-item" onclick="showPage('servicos')"><span class="nav-icon">✂️</span> <span>Serviços</span></button>
-        <button class="nav-item" onclick="showPage('funcionarios')"><span class="nav-icon">💈</span> <span>Funcionários</span></button>
-        <button class="nav-item" onclick="showPage('agendamentos')"><span class="nav-icon">📅</span> <span>Agendamentos</span></button>
+        <button class="nav-item active" data-page="dashboard" onclick="showPage('dashboard', this)">
+            <span class="nav-icon">🏠</span> <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="usuarios" onclick="showPage('usuarios', this)">
+            <span class="nav-icon">👤</span> <span>Usuários</span>
+        </button>
+        <button class="nav-item" data-page="servicos" onclick="showPage('servicos', this)">
+            <span class="nav-icon">✂️</span> <span>Serviços</span>
+        </button>
+        <button class="nav-item" data-page="funcionarios" onclick="showPage('funcionarios', this)">
+            <span class="nav-icon">💈</span> <span>Funcionários</span>
+        </button>
+        <button class="nav-item" data-page="agendamentos" onclick="showPage('agendamentos', this)">
+            <span class="nav-icon">📅</span> <span>Agendamentos</span>
+        </button>
         <div class="nav-section-label">Sistema</div>
-        <button class="nav-item" onclick="showPage('configuracoes')"><span class="nav-icon">⚙️</span> <span>Configurações</span></button>
+        <button class="nav-item" data-page="configuracoes" onclick="showPage('configuracoes', this)">
+            <span class="nav-icon">⚙️</span> <span>Configurações</span>
+        </button>
     </nav>
     <div class="sidebar-footer">
-        <button class="btn-logout" onclick="fazerLogout()"><span>🚪</span> <span>Sair</span></button>
+        <button class="btn-logout" onclick="fazerLogout()">
+            <span>🚪</span> <span>Sair do sistema</span>
+        </button>
     </div>
 </aside>
 
@@ -485,503 +397,767 @@
         </div>
         <div class="topbar-right">
             <div class="topbar-date" id="dataHoje"></div>
-            <button class="btn-novo" id="actionButton" onclick="acaoPrincipal()">➕ Novo</button>
+            <button class="btn-novo" id="actionButton" onclick="acaoPrincipal()" style="display:none">➕ Novo</button>
         </div>
     </div>
-    <div class="content" id="mainContent"></div>
+    <div class="content" id="mainContent">
+        <div style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--cinza-medio)">
+            Carregando...
+        </div>
+    </div>
 </main>
 
-<div class="modal" id="modal"><div class="modal-content" id="modalContent"></div></div>
+<div class="modal" id="modal" onclick="fecharModalFora(event)">
+    <div class="modal-content" id="modalContent"></div>
+</div>
+
+<div id="toastContainer"></div>
 
 <script>
-    const API_URL = 'http://localhost:3000';
-    let currentPage = 'dashboard';
+const API_URL = 'http://localhost:3000';
+let currentPage = 'dashboard';
 
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuario') || '{"nome":"Usuário","email":"usuario@email.com"}');
+const usuarioLogado = JSON.parse(localStorage.getItem('usuario') || '{"nome":"Admin","email":"admin@barbearia.com","cep":""}');
 
-    // ================= FUNÇÕES DE API =================
-    async function apiGet(endpoint) {
-        try {
-            const response = await fetch(`${API_URL}${endpoint}`);
-            if (!response.ok) throw new Error('Erro na requisição');
-            return await response.json();
-        } catch (error) {
-            console.error('Erro:', error);
-            return [];
-        }
-    }
+// ===================== TOAST =====================
+function toast(msg, tipo = 'success') {
+    const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+    const el = document.createElement('div');
+    el.className = `toast ${tipo}`;
+    el.innerHTML = `<span class="toast-icon">${icons[tipo]}</span><span>${msg}</span>`;
+    document.getElementById('toastContainer').appendChild(el);
+    setTimeout(() => {
+        el.style.animation = 'toastOut 0.3s ease forwards';
+        setTimeout(() => el.remove(), 300);
+    }, 3200);
+}
 
-    async function apiPost(endpoint, data) {
-        try {
-            const response = await fetch(`${API_URL}${endpoint}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro:', error);
-            return { error: 'Erro de conexão' };
-        }
-    }
+// ===================== API =====================
+async function apiGet(endpoint) {
+    try {
+        const r = await fetch(`${API_URL}${endpoint}`);
+        if (!r.ok) throw new Error('Erro');
+        return await r.json();
+    } catch { return []; }
+}
+async function apiPost(endpoint, data) {
+    try {
+        const r = await fetch(`${API_URL}${endpoint}`, {
+            method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+        });
+        return await r.json();
+    } catch { return { error: 'Erro de conexão' }; }
+}
+async function apiPut(endpoint, data) {
+    try {
+        const r = await fetch(`${API_URL}${endpoint}`, {
+            method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+        });
+        return await r.json();
+    } catch { return { error: 'Erro de conexão' }; }
+}
+async function apiDelete(endpoint, data = null) {
+    try {
+        const opts = { method: 'DELETE' };
+        if (data) { opts.headers = {'Content-Type':'application/json'}; opts.body = JSON.stringify(data); }
+        const r = await fetch(`${API_URL}${endpoint}`, opts);
+        return await r.json();
+    } catch { return { error: 'Erro de conexão' }; }
+}
 
-    async function apiPut(endpoint, data) {
-        try {
-            const response = await fetch(`${API_URL}${endpoint}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro:', error);
-            return { error: 'Erro de conexão' };
-        }
-    }
+// ===================== INIT =====================
+function inicializar() {
+    document.getElementById('sidebarNome').textContent = usuarioLogado.nome || 'Usuário';
+    const iniciais = (usuarioLogado.nome || 'U').split(' ').slice(0,2).map(n => n[0]).join('').toUpperCase();
+    document.getElementById('sidebarAvatar').textContent = iniciais;
+    const agora = new Date();
+    document.getElementById('dataHoje').textContent = '📅 ' + agora.toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
+    showPage('dashboard', document.querySelector('.nav-item[data-page="dashboard"]'));
+}
 
-    async function apiDelete(endpoint) {
-        try {
-            const response = await fetch(`${API_URL}${endpoint}`, {
-                method: 'DELETE'
-            });
-            return await response.json();
-        } catch (error) {
-            console.error('Erro:', error);
-            return { error: 'Erro de conexão' };
-        }
-    }
+// ===================== NAVIGATION =====================
+const pageMeta = {
+    dashboard:     { title: 'Dashboard',     subtitle: 'Visão geral do negócio',  btn: null },
+    usuarios:      { title: 'Usuários',       subtitle: 'Gerenciar usuários',       btn: '➕ Novo Usuário' },
+    servicos:      { title: 'Serviços',       subtitle: 'Gerenciar serviços',       btn: '➕ Novo Serviço' },
+    funcionarios:  { title: 'Funcionários',   subtitle: 'Gerenciar funcionários',   btn: '➕ Novo Funcionário' },
+    agendamentos:  { title: 'Agendamentos',   subtitle: 'Gerenciar agendamentos',   btn: '➕ Novo Agendamento' },
+    configuracoes: { title: 'Configurações',  subtitle: 'Configurações do sistema', btn: null },
+};
 
-    function inicializar() {
-        document.getElementById('sidebarNome').textContent = usuarioLogado.nome || 'Usuário';
-        const iniciais = (usuarioLogado.nome || 'U').split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase();
-        document.getElementById('sidebarAvatar').textContent = iniciais;
-        document.getElementById('dataHoje').textContent = '📅 ' + new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
-        showPage('dashboard');
-    }
+function showPage(page, btn) {
+    currentPage = page;
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    if (btn) btn.closest('.nav-item').classList.add('active');
 
-    function showPage(page) {
-        currentPage = page;
-        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-        event.target.closest('.nav-item').classList.add('active');
+    const meta = pageMeta[page] || {};
+    document.getElementById('pageTitle').textContent = meta.title || page;
+    document.getElementById('pageSubtitle').textContent = meta.subtitle || '';
 
-        const titles = {
-            dashboard:'Dashboard', usuarios:'Usuários', servicos:'Serviços',
-            funcionarios:'Funcionários', agendamentos:'Agendamentos', configuracoes:'Configurações'
-        };
-        document.getElementById('pageTitle').textContent = titles[page] || page;
-       
-        const actionBtn = document.getElementById('actionButton');
-        if (page === 'usuarios') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Usuário'; }
-        else if (page === 'servicos') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Serviço'; }
-        else if (page === 'funcionarios') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Funcionário'; }
-        else if (page === 'agendamentos') { actionBtn.style.display = 'flex'; actionBtn.innerHTML = '➕ Novo Agendamento'; }
-        else { actionBtn.style.display = 'none'; }
+    const actionBtn = document.getElementById('actionButton');
+    if (meta.btn) { actionBtn.style.display = 'flex'; actionBtn.innerHTML = meta.btn; }
+    else actionBtn.style.display = 'none';
 
-        renderPage();
-    }
+    renderPage();
+}
 
-    async function renderPage() {
-        const container = document.getElementById('mainContent');
-        if (currentPage === 'dashboard') container.innerHTML = await renderDashboard();
-        else if (currentPage === 'usuarios') container.innerHTML = await renderUsuarios();
-        else if (currentPage === 'servicos') container.innerHTML = await renderServicos();
-        else if (currentPage === 'funcionarios') container.innerHTML = await renderFuncionarios();
-        else if (currentPage === 'agendamentos') container.innerHTML = await renderAgendamentos();
-        else if (currentPage === 'configuracoes') container.innerHTML = renderConfiguracoes();
-    }
+async function renderPage() {
+    const c = document.getElementById('mainContent');
+    const map = { dashboard: renderDashboard, usuarios: renderUsuarios, servicos: renderServicos, funcionarios: renderFuncionarios, agendamentos: renderAgendamentos, configuracoes: renderConfiguracoes };
+    c.innerHTML = map[currentPage] ? await map[currentPage]() : '<p>Página não encontrada</p>';
+}
 
-    async function renderDashboard() {
-        const usuarios = await apiGet('/buscar');
-        const servicos = await apiGet('/servicos');
-       
-        return `
-            <div class="kpi-grid">
-                <div class="kpi-card azul"><div class="kpi-value">${usuarios.length}</div><div>Total Usuários</div></div>
-                <div class="kpi-card verde"><div class="kpi-value">${servicos.length}</div><div>Total Serviços</div></div>
-                <div class="kpi-card amarelo"><div class="kpi-value">8</div><div>Agendamentos Hoje</div></div>
-                <div class="kpi-card roxo"><div class="kpi-value">R$ 47</div><div>Ticket Médio</div></div>
+function acaoPrincipal() {
+    const map = { usuarios: () => abrirModalUsuario(), servicos: () => abrirModalServico(), funcionarios: () => abrirModalFuncionario(), agendamentos: () => abrirModalAgendamento() };
+    if (map[currentPage]) map[currentPage]();
+}
+
+// ===================== MODAL =====================
+function fecharModal() { document.getElementById('modal').style.display = 'none'; }
+function fecharModalFora(e) { if (e.target === document.getElementById('modal')) fecharModal(); }
+
+function modalHeader(titulo) {
+    return `<div class="modal-header"><h3>${titulo}</h3><button class="modal-close" onclick="fecharModal()">✕</button></div>`;
+}
+
+// ===================== DASHBOARD =====================
+async function renderDashboard() {
+    const [usuarios, servicos] = await Promise.all([apiGet('/buscar'), apiGet('/servicos')]);
+    const servicosAtivos = servicos.filter(s => s.status == 1);
+    const ticketMedio = servicosAtivos.length ? (servicosAtivos.reduce((a, s) => a + parseFloat(s.preco), 0) / servicosAtivos.length) : 0;
+    const totalPontos = servicos.reduce((a, s) => a + parseInt(s.pontos || 0), 0);
+
+    const recentUsers = usuarios.slice(0, 5);
+    const topServicos = [...servicos].sort((a, b) => parseFloat(b.preco) - parseFloat(a.preco)).slice(0, 5);
+
+    return `
+        <div class="kpi-grid">
+            <div class="kpi-card azul">
+                <div class="kpi-card-icon">👤</div>
+                <div class="kpi-value">${usuarios.length}</div>
+                <div class="kpi-label">Total de Usuários</div>
+                <div class="kpi-sub">Sistema ativo</div>
             </div>
-            <div class="card"><div class="card-header"><div class="card-title">📋 Últimos Usuários Cadastrados</div></div><div class="card-body">
-                ${usuarios.slice(0,5).map(u => `
-                    <div style="padding:10px 0; border-bottom:1px solid var(--cinza-claro); display:flex; justify-content:space-between">
-                        <span>${u.nome_completo}</span>
-                        <span>${u.email}</span>
-                        <span>${u.primeiro_acesso ? '⚠️ Primeiro acesso' : '✅ Ativo'}</span>
+            <div class="kpi-card verde">
+                <div class="kpi-card-icon">✂️</div>
+                <div class="kpi-value">${servicosAtivos.length}</div>
+                <div class="kpi-label">Serviços Ativos</div>
+                <div class="kpi-sub">${servicos.length - servicosAtivos.length} inativos</div>
+            </div>
+            <div class="kpi-card amarelo">
+                <div class="kpi-card-icon">💰</div>
+                <div class="kpi-value">R$&nbsp;${ticketMedio.toFixed(0)}</div>
+                <div class="kpi-label">Ticket Médio</div>
+                <div class="kpi-sub">Média dos serviços</div>
+            </div>
+            <div class="kpi-card roxo">
+                <div class="kpi-card-icon">⭐</div>
+                <div class="kpi-value">${totalPontos}</div>
+                <div class="kpi-label">Total de Pontos</div>
+                <div class="kpi-sub">Programa fidelidade</div>
+            </div>
+        </div>
+        <div class="dash-grid">
+            <div class="card">
+                <div class="card-header"><div class="card-title">👤 Últimos Usuários</div></div>
+                <div class="card-body">
+                    ${recentUsers.length ? recentUsers.map(u => {
+                        const ini = u.nome_completo.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase();
+                        return `<div class="user-row">
+                            <div class="user-row-avatar">${ini}</div>
+                            <div class="user-row-info">
+                                <strong>${u.nome_completo}</strong>
+                                <small>${u.email}</small>
+                            </div>
+                            ${u.primeiro_acesso ? '<span class="status-badge status-pendente">1º Acesso</span>' : '<span class="status-badge status-ativo">Ativo</span>'}
+                        </div>`;
+                    }).join('') : '<div class="empty-state"><div class="empty-icon">👤</div><p>Nenhum usuário</p></div>'}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><div class="card-title">✂️ Serviços por Preço</div></div>
+                <div class="card-body">
+                    ${topServicos.length ? topServicos.map(s => `
+                        <div class="servico-row">
+                            <div>
+                                <div class="servico-row-nome">${s.nome}</div>
+                                <small style="color:var(--cinza-medio)">${s.duracao}min · ${s.pontos}pts</small>
+                            </div>
+                            <div style="text-align:right">
+                                <div class="servico-row-preco">R$ ${parseFloat(s.preco).toFixed(2)}</div>
+                                <span class="status-badge ${s.status==1?'status-ativo':'status-inativo'}">${s.status==1?'Ativo':'Inativo'}</span>
+                            </div>
+                        </div>
+                    `).join('') : '<div class="empty-state"><div class="empty-icon">✂️</div><p>Nenhum serviço</p></div>'}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ===================== USUÁRIOS =====================
+async function renderUsuarios() {
+    const usuarios = await apiGet('/buscar');
+    const ativos = usuarios.filter(u => !u.primeiro_acesso).length;
+    return `
+        <div class="filter-bar">
+            <input type="text" id="buscaUsuario" placeholder="🔍 Buscar por nome ou email..." oninput="filtrarUsuarios()" style="min-width:240px">
+            <select onchange="filtrarUsuariosPorStatus(this.value)" style="width:auto">
+                <option value="">Todos os status</option>
+                <option value="ativo">Ativos</option>
+                <option value="pendente">1º Acesso</option>
+            </select>
+            <span style="color:var(--cinza-medio);font-size:0.8rem;margin-left:auto">${usuarios.length} usuários · ${ativos} ativos</span>
+        </div>
+        <div class="card">
+            <div class="card-header"><div class="card-title">👤 Usuários do Sistema</div></div>
+            <div class="card-body" style="padding:0">
+                <table class="data-table" id="tabelaUsuarios">
+                    <thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>CEP</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody>
+                        ${usuarios.length ? usuarios.map(u => `
+                            <tr data-status="${u.primeiro_acesso ? 'pendente' : 'ativo'}">
+                                <td style="color:var(--cinza-medio)">#${u.id_usuario}</td>
+                                <td><strong>${u.nome_completo}</strong></td>
+                                <td>${u.email}</td>
+                                <td>${u.cep}</td>
+                                <td>${u.primeiro_acesso
+                                    ? '<span class="status-badge status-pendente">1º Acesso</span>'
+                                    : '<span class="status-badge status-ativo">Ativo</span>'}</td>
+                                <td>
+                                    <button class="btn-editar" onclick="editarUsuario(${u.id_usuario})">Editar</button>
+                                    <button class="btn-deletar" onclick="deletarUsuario(${u.id_usuario})">Excluir</button>
+                                </td>
+                            </tr>
+                        `).join('') : `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">👤</div><p>Nenhum usuário cadastrado</p></div></td></tr>`}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function filtrarUsuarios() {
+    const busca = document.getElementById('buscaUsuario')?.value.toLowerCase() || '';
+    document.querySelectorAll('#tabelaUsuarios tbody tr').forEach(row => {
+        const nome = row.cells[1]?.textContent.toLowerCase() || '';
+        const email = row.cells[2]?.textContent.toLowerCase() || '';
+        row.style.display = (nome.includes(busca) || email.includes(busca)) ? '' : 'none';
+    });
+}
+function filtrarUsuariosPorStatus(val) {
+    document.querySelectorAll('#tabelaUsuarios tbody tr').forEach(row => {
+        row.style.display = (!val || row.dataset.status === val) ? '' : 'none';
+    });
+}
+
+function abrirModalUsuario(data = null) {
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalContent').innerHTML = `
+        ${modalHeader(data ? 'Editar Usuário' : 'Novo Usuário')}
+        <div class="form-group"><label>Nome Completo *</label><input type="text" id="uNome" value="${data?.nome_completo || ''}"></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="uEmail" value="${data?.email || ''}"></div>
+        <div class="form-group"><label>CEP *</label><input type="text" id="uCep" value="${data?.cep || ''}" maxlength="10"></div>
+        <div class="form-group"><label>Senha ${data ? '(deixe vazio para manter)' : '(opcional — se vazio, usuário define no 1º acesso)'}</label><input type="password" id="uSenha" placeholder="••••••"></div>
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+            <button class="btn-save" style="margin:0" onclick="salvarUsuario(${data?.id_usuario || 'null'})">Salvar</button>
+        </div>
+    `;
+}
+
+async function salvarUsuario(id) {
+    const dados = {
+        nome_completo: document.getElementById('uNome').value.trim(),
+        email: document.getElementById('uEmail').value.trim(),
+        cep: document.getElementById('uCep').value.trim(),
+        senha: document.getElementById('uSenha').value
+    };
+    if (!dados.nome_completo || !dados.email || !dados.cep) { toast('Preencha todos os campos obrigatórios', 'error'); return; }
+    const result = id
+        ? await apiPut('/atualizar', { id_usuario: id, ...dados })
+        : await apiPost('/cadastrar', dados);
+    if (result.error) { toast(result.error, 'error'); return; }
+    toast(result.mensagem || 'Operação realizada!');
+    fecharModal(); renderPage();
+}
+
+async function editarUsuario(id) {
+    const usuarios = await apiGet('/buscar');
+    abrirModalUsuario(usuarios.find(u => u.id_usuario === id));
+}
+
+async function deletarUsuario(id) {
+    if (!confirm('Excluir este usuário? Esta ação não pode ser desfeita.')) return;
+    const result = await apiDelete('/deletar', { id_usuario: id });
+    toast(result.mensagem || result.error || 'Operação realizada', result.error ? 'error' : 'success');
+    renderPage();
+}
+
+// ===================== SERVIÇOS =====================
+async function renderServicos() {
+    const servicos = await apiGet('/servicos');
+    return `
+        <div class="filter-bar">
+            <input type="text" id="buscaServico" placeholder="🔍 Buscar serviço..." oninput="filtrarServicos()" style="min-width:220px">
+            <select onchange="filtrarServicosPorStatus(this.value)" style="width:auto">
+                <option value="">Todos</option>
+                <option value="1">Ativos</option>
+                <option value="0">Inativos</option>
+            </select>
+            <span style="color:var(--cinza-medio);font-size:0.8rem;margin-left:auto">${servicos.length} serviços</span>
+        </div>
+        <div class="card">
+            <div class="card-header"><div class="card-title">✂️ Serviços</div></div>
+            <div class="card-body" style="padding:0">
+                <table class="data-table" id="tabelaServicos">
+                    <thead><tr><th>ID</th><th>Serviço</th><th>Preço</th><th>Duração</th><th>Pontos</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody>
+                        ${servicos.length ? servicos.map(s => `
+                            <tr data-status="${s.status}">
+                                <td style="color:var(--cinza-medio)">#${s.id_servicos}</td>
+                                <td><strong>${s.nome}</strong></td>
+                                <td>R$ ${parseFloat(s.preco).toFixed(2)}</td>
+                                <td>${s.duracao} min</td>
+                                <td><span style="background:#f5f3ff;color:#7c3aed;padding:2px 8px;border-radius:12px;font-size:0.75rem;font-weight:600">${s.pontos} pts</span></td>
+                                <td><span class="status-badge ${s.status==1?'status-ativo':'status-inativo'}">${s.status==1?'Ativo':'Inativo'}</span></td>
+                                <td>
+                                    <button class="btn-editar" onclick="editarServico(${s.id_servicos})">Editar</button>
+                                    <button class="btn-deletar" onclick="deletarServico(${s.id_servicos})">Excluir</button>
+                                </td>
+                            </tr>
+                        `).join('') : `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">✂️</div><p>Nenhum serviço cadastrado</p></div></td></tr>`}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function filtrarServicos() {
+    const busca = document.getElementById('buscaServico')?.value.toLowerCase() || '';
+    document.querySelectorAll('#tabelaServicos tbody tr').forEach(row => {
+        row.style.display = row.cells[1]?.textContent.toLowerCase().includes(busca) ? '' : 'none';
+    });
+}
+function filtrarServicosPorStatus(val) {
+    document.querySelectorAll('#tabelaServicos tbody tr').forEach(row => {
+        row.style.display = (!val || row.dataset.status == val) ? '' : 'none';
+    });
+}
+
+function abrirModalServico(data = null) {
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalContent').innerHTML = `
+        ${modalHeader(data ? 'Editar Serviço' : 'Novo Serviço')}
+        <div class="form-group"><label>Nome *</label><input type="text" id="sNome" value="${data?.nome || ''}"></div>
+        <div class="form-row">
+            <div class="form-group"><label>Preço (R$) *</label><input type="number" id="sPreco" step="0.01" min="0" value="${data?.preco || ''}"></div>
+            <div class="form-group"><label>Duração (min) *</label><input type="number" id="sDuracao" min="1" value="${data?.duracao || ''}"></div>
+        </div>
+        <div class="form-group"><label>Pontos de Fidelidade</label><input type="number" id="sPontos" min="0" value="${data?.pontos ?? 0}"></div>
+        ${data ? `<div class="form-group"><label>Status</label><select id="sStatus"><option value="1" ${data.status==1?'selected':''}>Ativo</option><option value="0" ${data.status==0?'selected':''}>Inativo</option></select></div>` : ''}
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+            <button class="btn-save" style="margin:0" onclick="salvarServico(${data?.id_servicos || 'null'})">Salvar</button>
+        </div>
+    `;
+}
+
+async function salvarServico(id) {
+    const dados = {
+        nome: document.getElementById('sNome').value.trim(),
+        preco: parseFloat(document.getElementById('sPreco').value),
+        duracao: parseInt(document.getElementById('sDuracao').value),
+        pontos: parseInt(document.getElementById('sPontos').value) || 0
+    };
+    if (!dados.nome || isNaN(dados.preco) || isNaN(dados.duracao)) { toast('Preencha todos os campos obrigatórios', 'error'); return; }
+    let result;
+    if (id) {
+        dados.status = parseInt(document.getElementById('sStatus')?.value ?? 1);
+        result = await apiPut(`/servicos/${id}`, dados);
+    } else {
+        dados.status = 1; // Novo serviço sempre começa ativo
+        result = await apiPost('/servicos', dados);
+    }
+    if (result.error) { toast(result.error, 'error'); return; }
+    toast(result.mensagem || 'Serviço salvo!');
+    fecharModal(); renderPage();
+}
+
+async function editarServico(id) { abrirModalServico(await apiGet(`/servicos/${id}`)); }
+async function deletarServico(id) {
+    if (!confirm('Desativar este serviço?')) return;
+    const result = await apiDelete(`/servicos/${id}`);
+    toast(result.mensagem || result.error, result.error ? 'error' : 'success');
+    renderPage();
+}
+
+// ===================== FUNCIONÁRIOS (API) =====================
+async function renderFuncionarios() {
+    const funcs = await apiGet('/funcionarios');
+    return `
+        <div class="filter-bar">
+            <input type="text" id="buscaFunc" placeholder="🔍 Buscar funcionário..." oninput="filtrarFuncionarios()" style="min-width:220px">
+            <span style="color:var(--cinza-medio);font-size:0.8rem;margin-left:auto">${funcs.length} funcionários</span>
+        </div>
+        <div class="card">
+            <div class="card-header"><div class="card-title">💈 Funcionários</div></div>
+            <div class="card-body" style="padding:0">
+                <table class="data-table" id="tabelaFunc">
+                    <thead><tr><th>ID</th><th>Nome</th><th>Função</th><th>Ações</th></tr></thead>
+                    <tbody>
+                        ${funcs.length ? funcs.map(f => `
+                            <tr>
+                                <td style="color:var(--cinza-medio)">#${f.id_funcionario}</td>
+                                <td><strong>${f.nome}</strong></td>
+                                <td><span style="background:#eff6ff;color:#2563eb;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:600">${f.funcao}</span></td>
+                                <td>
+                                    <button class="btn-editar" onclick="editarFuncionario(${f.id_funcionario})">Editar</button>
+                                    <button class="btn-deletar" onclick="deletarFuncionario(${f.id_funcionario})">Excluir</button>
+                                </td>
+                            </tr>
+                        `).join('') : `<tr><td colspan="4"><div class="empty-state"><div class="empty-icon">💈</div><p>Nenhum funcionário cadastrado</p></div></td></tr>`}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function filtrarFuncionarios() {
+    const busca = document.getElementById('buscaFunc')?.value.toLowerCase() || '';
+    document.querySelectorAll('#tabelaFunc tbody tr').forEach(row => {
+        const nome = row.cells[1]?.textContent.toLowerCase() || '';
+        row.style.display = nome.includes(busca) ? '' : 'none';
+    });
+}
+
+function abrirModalFuncionario(data = null) {
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalContent').innerHTML = `
+        ${modalHeader(data ? 'Editar Funcionário' : 'Novo Funcionário')}
+        <div class="form-group"><label>Nome *</label><input type="text" id="fNome" value="${data?.nome || ''}"></div>
+        <div class="form-group"><label>Função *</label><input type="text" id="fFuncao" value="${data?.funcao || ''}" placeholder="Ex: Barbeiro, Estilista..."></div>
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+            <button class="btn-save" style="margin:0" onclick="salvarFuncionario(${data?.id_funcionario || 'null'})">Salvar</button>
+        </div>
+    `;
+}
+
+async function salvarFuncionario(id) {
+    const dados = {
+        nome: document.getElementById('fNome').value.trim(),
+        funcao: document.getElementById('fFuncao').value.trim()
+    };
+    if (!dados.nome || !dados.funcao) { toast('Preencha todos os campos', 'error'); return; }
+    const result = id
+        ? await apiPut(`/funcionarios/${id}`, dados)
+        : await apiPost('/funcionarios', dados);
+    if (result.error) { toast(result.error, 'error'); return; }
+    toast(result.mensagem || 'Funcionário salvo!');
+    fecharModal(); renderPage();
+}
+
+async function editarFuncionario(id) {
+    const funcs = await apiGet('/funcionarios');
+    abrirModalFuncionario(funcs.find(f => f.id_funcionario === id));
+}
+
+async function deletarFuncionario(id) {
+    if (!confirm('Excluir este funcionário?')) return;
+    const result = await apiDelete(`/funcionarios/${id}`);
+    toast(result.mensagem || result.error, result.error ? 'error' : 'success');
+    renderPage();
+}
+
+// ===================== AGENDAMENTOS (API) =====================
+async function renderAgendamentos() {
+    const agendamentos = await apiGet('/agendamentos');
+    return `
+        <div class="filter-bar">
+            <input type="date" id="filtroData" onchange="filtrarAgendamentos()">
+            <select id="filtroStatus" onchange="filtrarAgendamentos()" style="width:auto">
+                <option value="">Todos os status</option>
+                <option value="agendado">Agendado</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
+            <span style="color:var(--cinza-medio);font-size:0.8rem;margin-left:auto">${agendamentos.length} agendamentos</span>
+        </div>
+        <div class="card">
+            <div class="card-header"><div class="card-title">📅 Agendamentos</div></div>
+            <div class="card-body" style="padding:0">
+                <table class="data-table" id="tabelaAg">
+                    <thead><tr><th>ID</th><th>Data/Hora</th><th>Cliente</th><th>Serviço</th><th>Profissional</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody>
+                        ${agendamentos.length ? agendamentos.map(a => {
+                            const d = new Date(a.data);
+                            const dataFmt = d.toLocaleDateString('pt-BR');
+                            const horaFmt = d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+                            return `
+                            <tr data-status="${a.status}">
+                                <td style="color:var(--cinza-medio)">#${a.id}</td>
+                                <td><strong>${dataFmt}</strong><br><small style="color:var(--cinza-medio)">${horaFmt}</small></td>
+                                <td>${a.cliente_nome || a.id_usuario}</td>
+                                <td>${a.servico_nome || a.id_servicos}</td>
+                                <td>${a.funcionario_nome || a.id_funcionario}</td>
+                                <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+                                <td>
+                                    <button class="btn-editar" onclick="editarAgendamento(${a.id})">Editar</button>
+                                    <button class="btn-deletar" onclick="deletarAgendamento(${a.id})">Excluir</button>
+                                </td>
+                            </tr>`;
+                        }).join('') : `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📅</div><p>Nenhum agendamento encontrado</p></div></td></tr>`}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+function filtrarAgendamentos() {
+    const data = document.getElementById('filtroData')?.value || '';
+    const status = document.getElementById('filtroStatus')?.value || '';
+    document.querySelectorAll('#tabelaAg tbody tr').forEach(row => {
+        let show = true;
+        if (status && row.dataset.status !== status) show = false;
+        if (data) {
+            const cellData = row.cells[1]?.querySelector('strong')?.textContent || '';
+            const [day, month, year] = cellData.split('/');
+            const rowDate = year && month && day ? `${year}-${month}-${day}` : '';
+            if (rowDate !== data) show = false;
+        }
+        row.style.display = show ? '' : 'none';
+    });
+}
+
+async function abrirModalAgendamento(data = null) {
+    const [usuarios, servicos, funcs] = await Promise.all([apiGet('/buscar'), apiGet('/servicos'), apiGet('/funcionarios')]);
+
+    let dataVal = '', horaVal = '';
+    if (data?.data) {
+        const d = new Date(data.data);
+        dataVal = d.toISOString().split('T')[0];
+        horaVal = d.toTimeString().slice(0,5);
+    }
+
+    // Armazena lista de usuários globalmente para o autocomplete
+    window._agUsuarios = usuarios;
+
+    const clienteNomeInicial = data ? (usuarios.find(u => u.id_usuario == data.id_usuario)?.nome_completo || '') : '';
+
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalContent').innerHTML = `
+        ${modalHeader(data ? 'Editar Agendamento' : 'Novo Agendamento')}
+        <div class="form-group" style="position:relative">
+            <label>Cliente *</label>
+            <input type="text" id="agClienteSearch" placeholder="Digite para buscar cliente..."
+                autocomplete="off"
+                value="${clienteNomeInicial}"
+                oninput="filtrarClientesDropdown()"
+                onfocus="document.getElementById('agClienteDropdown').style.display='block'; filtrarClientesDropdown()"
+                onblur="setTimeout(()=>{ document.getElementById('agClienteDropdown').style.display='none' }, 200)"
+                style="cursor:text">
+            <input type="hidden" id="agCliente" value="${data?.id_usuario || ''}">
+            <div id="agClienteDropdown"
+                style="display:none;position:absolute;top:calc(100% + 2px);left:0;right:0;background:white;
+                border:1px solid #e2e8f0;border-radius:9px;max-height:180px;overflow-y:auto;
+                z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.12)">
+                ${usuarios.map(u => `
+                <div class="ag-cliente-opt" data-id="${u.id_usuario}" data-nome="${u.nome_completo.replace(/"/g,'&quot;')}"
+                    onmousedown="selecionarClienteAg(${u.id_usuario}, this.dataset.nome)"
+                    style="padding:9px 13px;cursor:pointer;font-size:0.86rem;border-bottom:1px solid #f1f5f9;transition:background 0.1s"
+                    onmouseover="this.style.background='#eff6ff'"
+                    onmouseout="this.style.background=''">
+                    ${u.nome_completo}
+                </div>`).join('')}
+            </div>
+        </div>
+        <div class="form-group"><label>Serviço *</label>
+            <select id="agServico">
+                <option value="">Selecione o serviço</option>
+                ${servicos.map(s => `<option value="${s.id_servicos}" ${data?.id_servicos==s.id_servicos?'selected':''}>${s.nome} — R$ ${parseFloat(s.preco).toFixed(2)}</option>`).join('')}
+            </select>
+        </div>
+        <div class="form-group"><label>Profissional *</label>
+            <select id="agFuncionario">
+                <option value="">Selecione o profissional</option>
+                ${funcs.map(f => `<option value="${f.id_funcionario}" ${data?.id_funcionario==f.id_funcionario?'selected':''}>${f.nome} — ${f.funcao}</option>`).join('')}
+            </select>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>Data *</label><input type="date" id="agData" value="${dataVal}"></div>
+            <div class="form-group"><label>Horário *</label><input type="time" id="agHora" value="${horaVal}"></div>
+        </div>
+        <div class="form-group"><label>Status</label>
+            <select id="agStatus">
+                ${['agendado','confirmado','concluido','cancelado'].map(s => `<option value="${s}" ${data?.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
+            </select>
+        </div>
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+            <button class="btn-save" style="margin:0" onclick="salvarAgendamento(${data?.id || 'null'})">Salvar</button>
+        </div>
+    `;
+}
+
+function filtrarClientesDropdown() {
+    const termo = document.getElementById('agClienteSearch').value.toLowerCase();
+    const dropdown = document.getElementById('agClienteDropdown');
+    if (!dropdown) return;
+    dropdown.style.display = 'block';
+    const opts = dropdown.querySelectorAll('.ag-cliente-opt');
+    opts.forEach(opt => {
+        const nome = opt.dataset.nome.toLowerCase();
+        opt.style.display = nome.includes(termo) ? '' : 'none';
+    });
+    // Se o campo foi limpo, limpa o hidden também
+    if (!document.getElementById('agClienteSearch').value.trim()) {
+        document.getElementById('agCliente').value = '';
+    }
+}
+
+function selecionarClienteAg(id, nome) {
+    document.getElementById('agCliente').value = id;
+    document.getElementById('agClienteSearch').value = nome;
+    document.getElementById('agClienteDropdown').style.display = 'none';
+}
+
+async function salvarAgendamento(id) {
+    const dataInput = document.getElementById('agData').value;
+    const horaInput = document.getElementById('agHora').value;
+    const servicoSelect = document.getElementById('agServico');
+    const servicoOpt = servicoSelect.options[servicoSelect.selectedIndex];
+    // Extrai o preço do texto da option (ex: "Corte — R$ 35.00")
+    const precoMatch = servicoOpt?.text.match(/R\$\s*([\d,.]+)/);
+    const agenda_valor = precoMatch ? parseFloat(precoMatch[1].replace(',', '.')) : 0;
+
+    const dados = {
+        id_usuario: parseInt(document.getElementById('agCliente').value),
+        id_servicos: parseInt(document.getElementById('agServico').value),
+        id_funcionario: parseInt(document.getElementById('agFuncionario').value),
+        agenda_valor,
+        data: dataInput && horaInput ? `${dataInput}T${horaInput}:00` : null,
+        status: document.getElementById('agStatus').value
+    };
+    if (!dados.id_usuario || !dados.id_servicos || !dados.id_funcionario || !dados.data) {
+        toast('Preencha todos os campos obrigatórios', 'error'); return;
+    }
+    const result = id
+        ? await apiPut(`/agendamentos/${id}`, dados)
+        : await apiPost('/agendamentos', dados);
+    if (result.error) { toast(result.error, 'error'); return; }
+    toast(result.mensagem || 'Agendamento salvo!');
+    fecharModal(); renderPage();
+}
+
+async function editarAgendamento(id) {
+    const ags = await apiGet('/agendamentos');
+    abrirModalAgendamento(ags.find(a => a.id === id));
+}
+
+async function deletarAgendamento(id) {
+    if (!confirm('Excluir este agendamento?')) return;
+    const result = await apiDelete(`/agendamentos/${id}`);
+    toast(result.mensagem || result.error, result.error ? 'error' : 'success');
+    renderPage();
+}
+
+// ===================== CONFIGURAÇÕES =====================
+async function renderConfiguracoes() {
+    return `
+        <div class="dash-grid">
+            <div class="card">
+                <div class="card-header"><div class="card-title">👤 Meu Perfil</div></div>
+                <div class="card-body">
+                    <div class="config-section">
+                        <div class="info-row"><span>Nome</span><span>${usuarioLogado.nome || '—'}</span></div>
+                        <div class="info-row"><span>Email</span><span>${usuarioLogado.email || '—'}</span></div>
+                        <div class="info-row"><span>CEP</span><span>${usuarioLogado.cep || 'Não informado'}</span></div>
                     </div>
-                `).join('') || '<p>Nenhum usuário cadastrado</p>'}
-            </div></div>
-        `;
-    }
-
-    // ================= USUÁRIOS =================
-    async function renderUsuarios() {
-        const usuarios = await apiGet('/buscar');
-        return `
-            <div class="filter-bar"><input type="text" id="buscaUsuario" placeholder="Buscar usuário..." onkeyup="filtrarUsuarios()"></div>
-            <div class="card"><div class="card-header"><div class="card-title">👤 Usuários do Sistema</div></div><div class="card-body">
-                <table class="data-table" id="tabelaUsuarios"><thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>CEP</th><th>Status</th><th>Ações</th></tr></thead>
-                <tbody>${usuarios.map(u => `
-                    <tr>
-                        <td>${u.id_usuario}</td>
-                        <td>${u.nome_completo}</td>
-                        <td>${u.email}</td>
-                        <td>${u.cep}</td>
-                        <td>${u.primeiro_acesso ? '⚠️ Primeiro acesso' : '✅ Ativo'}</td>
-                        <td><button class="btn-editar" onclick="editarUsuario(${u.id_usuario})">Editar</button><button class="btn-deletar" onclick="deletarUsuario(${u.id_usuario})">Excluir</button></td>
-                    </tr>
-                `).join('')}</tbody>
-                </table>
-            </div></div>
-        `;
-    }
-
-    function filtrarUsuarios() {
-        const busca = document.getElementById('buscaUsuario')?.value.toLowerCase() || '';
-        const rows = document.querySelectorAll('#tabelaUsuarios tbody tr');
-        rows.forEach(row => {
-            const nome = row.cells[1]?.textContent.toLowerCase() || '';
-            row.style.display = nome.includes(busca) ? '' : 'none';
-        });
-    }
-
-    function abrirModalUsuario(data = null) {
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modalContent');
-        modalContent.innerHTML = `
-            <h3>${data ? 'Editar' : 'Novo'} Usuário</h3>
-            <div class="form-group"><label>Nome Completo *</label><input type="text" id="usuarioNome" value="${data ? data.nome_completo : ''}"></div>
-            <div class="form-group"><label>Email *</label><input type="email" id="usuarioEmail" value="${data ? data.email : ''}"></div>
-            <div class="form-group"><label>CEP *</label><input type="text" id="usuarioCep" value="${data ? data.cep : ''}"></div>
-            <div class="form-group"><label>Senha ${data ? '(deixe em branco para manter)' : '(opcional)'}</label><input type="password" id="usuarioSenha" placeholder="********"></div>
-            <button class="btn-save" onclick="salvarUsuario(${data ? data.id_usuario : 'null'})">Salvar</button>
-        `;
-        modal.style.display = 'flex';
-    }
-
-    async function salvarUsuario(id) {
-        const dados = {
-            nome_completo: document.getElementById('usuarioNome').value,
-            email: document.getElementById('usuarioEmail').value,
-            cep: document.getElementById('usuarioCep').value,
-            senha: document.getElementById('usuarioSenha').value || ''
-        };
-       
-        if (!dados.nome_completo || !dados.email || !dados.cep) {
-            alert('Preencha todos os campos obrigatórios');
-            return;
-        }
-       
-        const result = id ? await apiPut('/atualizar', { id_usuario: id, ...dados }) : await apiPost('/cadastrar', dados);
-        alert(result.mensagem || (result.error || 'Operação realizada'));
-        fecharModal();
-        renderPage();
-    }
-
-    async function editarUsuario(id) {
-        const usuarios = await apiGet('/buscar');
-        const usuario = usuarios.find(u => u.id_usuario === id);
-        abrirModalUsuario(usuario);
-    }
-
-    async function deletarUsuario(id) {
-        if(confirm('Tem certeza que deseja excluir este usuário?')) {
-            const result = await apiDelete(`/deletar`, { id_usuario: id });
-            alert(result.mensagem);
-            renderPage();
-        }
-    }
-
-    // ================= SERVIÇOS (integrados com backend) =================
-    async function renderServicos() {
-        const servicos = await apiGet('/servicos');
-        return `
-            <div class="filter-bar"><input type="text" id="buscaServico" placeholder="Buscar serviço..." onkeyup="filtrarServicos()"></div>
-            <div class="card"><div class="card-header"><div class="card-title">✂️ Serviços</div></div><div class="card-body">
-                <table class="data-table" id="tabelaServicos"><thead><tr><th>ID</th><th>Serviço</th><th>Preço</th><th>Duração</th><th>Pontos</th><th>Status</th><th>Ações</th></tr></thead>
-                <tbody>${servicos.map(s => `
-                    <tr>
-                        <td>${s.id_servicos}</td>
-                        <td>${s.nome}</td>
-                        <td>R$ ${parseFloat(s.preco).toFixed(2)}</td>
-                        <td>${s.duracao}min</td>
-                        <td>${s.pontos}</td>
-                        <td><span class="status-badge ${s.status == 1 ? 'status-ativo' : 'status-inativo'}">${s.status == 1 ? 'Ativo' : 'Inativo'}</span></td>
-                        <td><button class="btn-editar" onclick="editarServico(${s.id_servicos})">Editar</button><button class="btn-deletar" onclick="deletarServico(${s.id_servicos})">Excluir</button></td>
-                    </tr>
-                `).join('')}</tbody>
-                </table>
-            </div></div>
-        `;
-    }
-
-    function filtrarServicos() {
-        const busca = document.getElementById('buscaServico')?.value.toLowerCase() || '';
-        const rows = document.querySelectorAll('#tabelaServicos tbody tr');
-        rows.forEach(row => {
-            const nome = row.cells[1]?.textContent.toLowerCase() || '';
-            row.style.display = nome.includes(busca) ? '' : 'none';
-        });
-    }
-
-    function abrirModalServico(data = null) {
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modalContent');
-        modalContent.innerHTML = `
-            <h3>${data ? 'Editar' : 'Novo'} Serviço</h3>
-            <div class="form-group"><label>Nome *</label><input type="text" id="servicoNome" value="${data ? data.nome : ''}"></div>
-            <div class="form-row">
-                <div class="form-group"><label>Preço *</label><input type="number" id="servicoPreco" step="0.01" value="${data ? data.preco : ''}"></div>
-                <div class="form-group"><label>Duração (min) *</label><input type="number" id="servicoDuracao" value="${data ? data.duracao : ''}"></div>
+                    <button class="btn-novo" style="width:auto;margin-top:6px" onclick="abrirModalEditarPerfil()">✏️ Editar Perfil</button>
+                </div>
             </div>
-            <div class="form-group"><label>Pontos de Fidelidade</label><input type="number" id="servicoPontos" value="${data ? data.pontos : 0}"></div>
-            ${data ? `<div class="form-group"><label>Status</label><select id="servicoStatus"><option value="1" ${data.status == 1 ? 'selected' : ''}>Ativo</option><option value="0" ${data.status == 0 ? 'selected' : ''}>Inativo</option></select></div>` : ''}
-            <button class="btn-save" onclick="salvarServico(${data ? data.id_servicos : 'null'})">Salvar</button>
-        `;
-        modal.style.display = 'flex';
-    }
-
-    async function salvarServico(id) {
-        const dados = {
-            nome: document.getElementById('servicoNome').value,
-            preco: parseFloat(document.getElementById('servicoPreco').value),
-            duracao: parseInt(document.getElementById('servicoDuracao').value),
-            pontos: parseInt(document.getElementById('servicoPontos').value) || 0
-        };
-       
-        if (id) {
-            dados.status = parseInt(document.getElementById('servicoStatus')?.value || 1);
-            const result = await apiPut(`/servicos/${id}`, dados);
-            alert(result.mensagem || (result.error || 'Operação realizada'));
-        } else {
-            const result = await apiPost('/servicos', dados);
-            alert(result.mensagem || (result.error || 'Operação realizada'));
-        }
-        fecharModal();
-        renderPage();
-    }
-
-    async function editarServico(id) {
-        const servicos = await apiGet(`/servicos/${id}`);
-        abrirModalServico(servicos);
-    }
-
-    async function deletarServico(id) {
-        if(confirm('Tem certeza que deseja excluir este serviço?')) {
-            const result = await apiDelete(`/servicos/${id}`);
-            alert(result.mensagem);
-            renderPage();
-        }
-    }
-
-    // ================= FUNCIONÁRIOS (mockado) =================
-    let funcionariosMock = [
-        { id: 1, nome: 'João Silva', funcao: 'Barbeiro Especialista' },
-        { id: 2, nome: 'Pedro Souza', funcao: 'Barbeiro Master' },
-        { id: 3, nome: 'Gustavo Lima', funcao: 'Estilista' }
-    ];
-
-    async function renderFuncionarios() {
-        return `
-            <div class="card"><div class="card-header"><div class="card-title">💈 Funcionários</div></div><div class="card-body">
-                <table class="data-table"><thead><tr><th>ID</th><th>Nome</th><th>Função</th><th>Ações</th></tr></thead>
-                <tbody>${funcionariosMock.map(f => `
-                    <tr>
-                        <td>${f.id}</td>
-                        <td>${f.nome}</td>
-                        <td>${f.funcao}</td>
-                        <td><button class="btn-editar" onclick="editarFuncionario(${f.id})">Editar</button><button class="btn-deletar" onclick="deletarFuncionario(${f.id})">Excluir</button></td>
-                    </tr>
-                `).join('')}</tbody>
-                </table>
-            </div></div>
-        `;
-    }
-
-    function abrirModalFuncionario(data = null) {
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modalContent');
-        modalContent.innerHTML = `
-            <h3>${data ? 'Editar' : 'Novo'} Funcionário</h3>
-            <div class="form-group"><label>Nome</label><input type="text" id="funcionarioNome" value="${data ? data.nome : ''}"></div>
-            <div class="form-group"><label>Função</label><input type="text" id="funcionarioFuncao" value="${data ? data.funcao : ''}"></div>
-            <button class="btn-save" onclick="salvarFuncionario(${data ? data.id : 'null'})">Salvar</button>
-        `;
-        modal.style.display = 'flex';
-    }
-
-    function salvarFuncionario(id) {
-        const dados = {
-            nome: document.getElementById('funcionarioNome').value,
-            funcao: document.getElementById('funcionarioFuncao').value
-        };
-       
-        if (id) {
-            const index = funcionariosMock.findIndex(f => f.id === id);
-            if (index !== -1) funcionariosMock[index] = { ...funcionariosMock[index], ...dados };
-        } else {
-            const novoId = Math.max(...funcionariosMock.map(f => f.id), 0) + 1;
-            funcionariosMock.push({ id: novoId, ...dados });
-        }
-        alert('Funcionário salvo com sucesso!');
-        fecharModal();
-        renderPage();
-    }
-
-    function editarFuncionario(id) {
-        const funcionario = funcionariosMock.find(f => f.id === id);
-        abrirModalFuncionario(funcionario);
-    }
-
-    function deletarFuncionario(id) {
-        if(confirm('Tem certeza?')) {
-            funcionariosMock = funcionariosMock.filter(f => f.id !== id);
-            alert('Funcionário excluído!');
-            renderPage();
-        }
-    }
-
-    // ================= AGENDAMENTOS (mockado) =================
-    let agendamentosMock = [
-        { id: 1, data: '2024-04-28', horario: '09:00', cliente: 'Carlos Mendes', servico: 'Corte + Barba', funcionario: 'João Silva', status: 'confirmado' },
-        { id: 2, data: '2024-04-28', horario: '10:30', cliente: 'Rafael Lima', servico: 'Corte', funcionario: 'Pedro Souza', status: 'concluido' },
-        { id: 3, data: '2024-04-29', horario: '14:00', cliente: 'Lucas Ferreira', servico: 'Barba', funcionario: 'João Silva', status: 'agendado' }
-    ];
-
-    async function renderAgendamentos() {
-        const servicos = await apiGet('/servicos');
-        return `
-            <div class="filter-bar">
-                <input type="date" id="filtroData" placeholder="Filtrar por data">
-                <select id="filtroStatus"><option value="">Todos</option><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select>
-                <button class="btn-novo" style="width:auto;padding:8px 16px" onclick="filtrarAgendamentos()">Filtrar</button>
+            <div class="card">
+                <div class="card-header"><div class="card-title">🔒 Segurança</div></div>
+                <div class="card-body">
+                    <p style="font-size:0.85rem;color:var(--cinza-medio);margin-bottom:14px">Altere sua senha de acesso ao sistema.</p>
+                    <div class="form-group"><label>Nova Senha</label><input type="password" id="novaSenha" placeholder="Mínimo 6 caracteres"></div>
+                    <div class="form-group"><label>Confirmar Senha</label><input type="password" id="confirmarSenha" placeholder="Repita a senha"></div>
+                    <button class="btn-novo" style="width:auto" onclick="alterarSenha()">🔑 Alterar Senha</button>
+                </div>
             </div>
-            <div class="card"><div class="card-header"><div class="card-title">📅 Lista de Agendamentos</div></div><div class="card-body">
-                <table class="data-table" id="tabelaAgendamentos"><thead><tr><th>Data</th><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Funcionário</th><th>Status</th><th>Ações</th></tr></thead>
-                <tbody>${agendamentosMock.map(a => `
-                    <tr>
-                        <td>${a.data}</td>
-                        <td>${a.horario}</td>
-                        <td>${a.cliente}</td>
-                        <td>${a.servico}</td>
-                        <td>${a.funcionario}</td>
-                        <td><span class="status-badge status-${a.status}">${a.status}</span></td>
-                        <td><button class="btn-editar" onclick="editarAgendamento(${a.id})">Editar</button><button class="btn-deletar" onclick="deletarAgendamento(${a.id})">Excluir</button></td>
-                    </tr>
-                `).join('')}</tbody>
-                </table>
-            </div></div>
-        `;
-    }
-
-    function filtrarAgendamentos() {
-        const data = document.getElementById('filtroData')?.value || '';
-        const status = document.getElementById('filtroStatus')?.value || '';
-        const rows = document.querySelectorAll('#tabelaAgendamentos tbody tr');
-       
-        rows.forEach(row => {
-            let show = true;
-            if (data && !row.cells[0].textContent.includes(data)) show = false;
-            if (status && !row.cells[5].textContent.includes(status)) show = false;
-            row.style.display = show ? '' : 'none';
-        });
-    }
-
-    function abrirModalAgendamento(data = null) {
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modalContent');
-       
-        modalContent.innerHTML = `
-            <h3>${data ? 'Editar' : 'Novo'} Agendamento</h3>
-            <div class="form-group"><label>Cliente</label><input type="text" id="agendamentoCliente" placeholder="Nome do cliente" value="${data ? data.cliente : ''}"></div>
-            <div class="form-group"><label>Serviço</label><input type="text" id="agendamentoServico" placeholder="Serviço" value="${data ? data.servico : ''}"></div>
-            <div class="form-group"><label>Funcionário</label><input type="text" id="agendamentoFuncionario" placeholder="Funcionário" value="${data ? data.funcionario : ''}"></div>
-            <div class="form-row">
-                <div class="form-group"><label>Data</label><input type="date" id="agendamentoData" value="${data ? data.data : ''}"></div>
-                <div class="form-group"><label>Horário</label><input type="time" id="agendamentoHorario" value="${data ? data.horario : ''}"></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><div class="card-title">ℹ️ Sobre o Sistema</div></div>
+            <div class="card-body">
+                <div class="info-row"><span>Sistema</span><span>BarbershopSystem</span></div>
+                <div class="info-row"><span>Versão</span><span>2.0.0</span></div>
+                <div class="info-row"><span>Backend</span><span>Node.js + Express + MySQL</span></div>
+                <div class="info-row"><span>API Base</span><span>${API_URL}</span></div>
             </div>
-            <div class="form-group"><label>Status</label>
-                <select id="agendamentoStatus">
-                    <option value="agendado" ${data && data.status === 'agendado' ? 'selected' : ''}>Agendado</option>
-                    <option value="confirmado" ${data && data.status === 'confirmado' ? 'selected' : ''}>Confirmado</option>
-                    <option value="concluido" ${data && data.status === 'concluido' ? 'selected' : ''}>Concluído</option>
-                    <option value="cancelado" ${data && data.status === 'cancelado' ? 'selected' : ''}>Cancelado</option>
-                </select>
-            </div>
-            <button class="btn-save" onclick="salvarAgendamento(${data ? data.id : 'null'})">Salvar</button>
-        `;
-        modal.style.display = 'flex';
-    }
+        </div>
+    `;
+}
 
-    function salvarAgendamento(id) {
-        const dados = {
-            cliente: document.getElementById('agendamentoCliente').value,
-            servico: document.getElementById('agendamentoServico').value,
-            funcionario: document.getElementById('agendamentoFuncionario').value,
-            data: document.getElementById('agendamentoData').value,
-            horario: document.getElementById('agendamentoHorario').value,
-            status: document.getElementById('agendamentoStatus').value
-        };
-       
-        if (!dados.cliente || !dados.servico || !dados.data) {
-            alert('Preencha todos os campos obrigatórios');
-            return;
-        }
-       
-        if (id) {
-            const index = agendamentosMock.findIndex(a => a.id === id);
-            if (index !== -1) agendamentosMock[index] = { ...agendamentosMock[index], ...dados };
-        } else {
-            const novoId = Math.max(...agendamentosMock.map(a => a.id), 0) + 1;
-            agendamentosMock.push({ id: novoId, ...dados });
-        }
-        alert('Agendamento salvo com sucesso!');
-        fecharModal();
-        renderPage();
-    }
+function abrirModalEditarPerfil() {
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('modalContent').innerHTML = `
+        ${modalHeader('Editar Perfil')}
+        <div class="form-group"><label>Nome Completo *</label><input type="text" id="pNome" value="${usuarioLogado.nome || ''}"></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="pEmail" value="${usuarioLogado.email || ''}"></div>
+        <div class="form-group"><label>CEP</label><input type="text" id="pCep" value="${usuarioLogado.cep || ''}"></div>
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+            <button class="btn-save" style="margin:0" onclick="salvarPerfil()">Salvar</button>
+        </div>
+    `;
+}
 
-    function editarAgendamento(id) {
-        const agendamento = agendamentosMock.find(a => a.id === id);
-        abrirModalAgendamento(agendamento);
-    }
+async function salvarPerfil() {
+    const dados = {
+        id_usuario: usuarioLogado.id_usuario,
+        nome_completo: document.getElementById('pNome').value.trim(),
+        email: document.getElementById('pEmail').value.trim(),
+        cep: document.getElementById('pCep').value.trim()
+    };
+    if (!dados.nome_completo || !dados.email) { toast('Preencha os campos obrigatórios', 'error'); return; }
+    const result = await apiPut('/atualizar', dados);
+    if (result.error) { toast(result.error, 'error'); return; }
+    usuarioLogado.nome = dados.nome_completo;
+    usuarioLogado.email = dados.email;
+    usuarioLogado.cep = dados.cep;
+    localStorage.setItem('usuario', JSON.stringify(usuarioLogado));
+    document.getElementById('sidebarNome').textContent = dados.nome_completo;
+    document.getElementById('sidebarAvatar').textContent = dados.nome_completo.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase();
+    toast('Perfil atualizado!');
+    fecharModal(); renderPage();
+}
 
-    function deletarAgendamento(id) {
-        if(confirm('Tem certeza?')) {
-            agendamentosMock = agendamentosMock.filter(a => a.id !== id);
-            alert('Agendamento excluído!');
-            renderPage();
-        }
-    }
+async function alterarSenha() {
+    const nova = document.getElementById('novaSenha')?.value;
+    const conf = document.getElementById('confirmarSenha')?.value;
+    if (!nova || nova.length < 6) { toast('Senha deve ter mínimo 6 caracteres', 'error'); return; }
+    if (nova !== conf) { toast('As senhas não conferem', 'error'); return; }
+    const result = await apiPut('/atualizar', { id_usuario: usuarioLogado.id_usuario, nome_completo: usuarioLogado.nome, email: usuarioLogado.email, cep: usuarioLogado.cep || '', senha: nova });
+    if (result.error) { toast(result.error, 'error'); return; }
+    toast('Senha alterada com sucesso!');
+    document.getElementById('novaSenha').value = '';
+    document.getElementById('confirmarSenha').value = '';
+}
 
-    function renderConfiguracoes() {
-        return `<div class="card"><div class="card-header"><div class="card-title">⚙️ Configurações</div></div><div class="card-body">
-            <h4>Meu Perfil</h4>
-            <p><strong>Nome:</strong> ${usuarioLogado.nome}</p>
-            <p><strong>Email:</strong> ${usuarioLogado.email}</p>
-            <p><strong>CEP:</strong> ${usuarioLogado.cep || 'Não informado'}</p>
-            <button class="btn-novo" style="width:auto;margin-top:16px" onclick="alert('Edição de perfil em breve')">Editar Perfil</button>
-        </div></div>`;
-    }
+// ===================== LOGOUT =====================
+function fazerLogout() {
+    if (!confirm('Deseja sair do sistema?')) return;
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    window.location.href = 'index.html';
+}
 
-    function acaoPrincipal() {
-        if(currentPage === 'usuarios') abrirModalUsuario();
-        else if(currentPage === 'servicos') abrirModalServico();
-        else if(currentPage === 'funcionarios') abrirModalFuncionario();
-        else if(currentPage === 'agendamentos') abrirModalAgendamento();
-    }
-
-    function fecharModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
-
-    function fazerLogout() {
-        if(confirm('Deseja sair do sistema?')) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('usuario');
-            window.location.href = 'index.html';
-        }
-    }
-
-    inicializar();
+inicializar();
 </script>
 </body>
 </html>
