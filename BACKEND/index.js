@@ -791,4 +791,3 @@ app.patch('/agendamentos/:id/status', async (req, res) => {
 });
 
 
-teste
