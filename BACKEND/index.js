@@ -353,15 +353,15 @@ app.get('/servicos/:id', async (req, res) => {
 // Cadastrar serviço
 app.post('/servicos', async (req, res) => {
     try {
-        const { nome, preco, duracao, pontos } = req.body;
+        const { nome, preco, duracao, pontos, status } = req.body;
        
         if (!nome || !preco || !duracao) {
             return res.status(400).json({ error: "Nome, preço e duração são obrigatórios" });
         }
        
         const [resultado] = await conexao.execute(
-            'INSERT INTO servicos (nome, preco, duracao, pontos) VALUES (?, ?, ?, ?)',
-            [nome, preco, duracao, pontos || 0]
+            'INSERT INTO servicos (nome, preco, duracao, pontos, status) VALUES (?, ?, ?, ?, ?)',
+            [nome, preco, duracao, pontos || 0, status !== undefined ? status : 1]
         );
        
         res.json({
@@ -414,5 +414,391 @@ app.delete('/servicos/:id', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Erro ao deletar serviço" });
+    }
+});
+
+// ================================================================
+// NOVAS ROTAS — cole no final do seu index.js
+// (antes do inicializar() ou de qualquer outro código final)
+// ================================================================
+
+// ===================== FUNCIONÁRIOS =====================
+
+// GET todos os funcionários
+app.get('/funcionarios', async (req, res) => {
+    try {
+        const [resultado] = await conexao.query(
+            'SELECT * FROM funcionario ORDER BY id_funcionario ASC'
+        );
+        res.json(resultado);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao buscar funcionários" });
+    }
+});
+
+// GET funcionário por ID
+app.get('/funcionarios/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [resultado] = await conexao.execute(
+            'SELECT * FROM funcionario WHERE id_funcionario = ?',
+            [id]
+        );
+        if (resultado.length === 0) {
+            return res.status(404).json({ error: "Funcionário não encontrado" });
+        }
+        res.json(resultado[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao buscar funcionário" });
+    }
+});
+
+// POST cadastrar funcionário
+app.post('/funcionarios', async (req, res) => {
+    try {
+        const { nome, funcao } = req.body;
+
+        if (!nome || !funcao) {
+            return res.status(400).json({ error: "Nome e função são obrigatórios" });
+        }
+
+        const [resultado] = await conexao.execute(
+            'INSERT INTO funcionario (nome, funcao) VALUES (?, ?)',
+            [nome, funcao]
+        );
+
+        res.json({
+            insertId: resultado.insertId,
+            mensagem: "Funcionário cadastrado com sucesso!"
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao cadastrar funcionário" });
+    }
+});
+
+// PUT atualizar funcionário
+app.put('/funcionarios/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, funcao } = req.body;
+
+        if (!nome || !funcao) {
+            return res.status(400).json({ error: "Nome e função são obrigatórios" });
+        }
+
+        const [resultado] = await conexao.execute(
+            'UPDATE funcionario SET nome = ?, funcao = ? WHERE id_funcionario = ?',
+            [nome, funcao, id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: "Funcionário não encontrado" });
+        }
+
+        res.json({ mensagem: "Funcionário atualizado com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao atualizar funcionário" });
+    }
+});
+
+// DELETE funcionário
+app.delete('/funcionarios/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Verifica se há agendamentos vinculados
+        const [agendamentos] = await conexao.execute(
+            'SELECT id FROM agendamentos WHERE id_funcionario = ? LIMIT 1',
+            [id]
+        );
+
+        if (agendamentos.length > 0) {
+            return res.status(400).json({
+                error: "Não é possível excluir: funcionário possui agendamentos vinculados."
+            });
+        }
+
+        const [resultado] = await conexao.execute(
+            'DELETE FROM funcionario WHERE id_funcionario = ?',
+            [id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: "Funcionário não encontrado" });
+        }
+
+        res.json({ mensagem: "Funcionário excluído com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao excluir funcionário" });
+    }
+});
+
+
+// ===================== AGENDAMENTOS =====================
+//
+// IMPORTANTE: A tabela agendamentos precisa ter a coluna agenda_valor.
+// Rode o ALTER TABLE abaixo no seu banco antes de usar estas rotas:
+//
+//   ALTER TABLE agendamentos
+//     ADD COLUMN agenda_valor DECIMAL(10,2) NOT NULL DEFAULT 0.00
+//     AFTER id_servicos;
+//
+// Isso grava o preço do serviço no momento do agendamento,
+// evitando que alterações futuras de preço afetem o histórico.
+
+// GET todos os agendamentos (com JOIN para trazer nomes)
+app.get('/agendamentos', async (req, res) => {
+    try {
+        const [resultado] = await conexao.query(`
+            SELECT
+                a.id,
+                a.id_usuario,
+                a.id_funcionario,
+                a.id_servicos,
+                a.data,
+                a.status,
+                a.feedback,
+                a.agenda_valor,
+                u.nome_completo  AS cliente_nome,
+                s.nome           AS servico_nome,
+                s.preco          AS servico_preco_atual,
+                f.nome           AS funcionario_nome
+            FROM agendamentos a
+            LEFT JOIN usuarios   u ON u.id_usuario    = a.id_usuario
+            LEFT JOIN servicos   s ON s.id_servicos   = a.id_servicos
+            LEFT JOIN funcionario f ON f.id_funcionario = a.id_funcionario
+            ORDER BY a.data DESC
+        `);
+        res.json(resultado);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao buscar agendamentos" });
+    }
+});
+
+// GET agendamento por ID
+app.get('/agendamentos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [resultado] = await conexao.execute(`
+            SELECT
+                a.*,
+                u.nome_completo  AS cliente_nome,
+                s.nome           AS servico_nome,
+                s.preco          AS servico_preco_atual,
+                f.nome           AS funcionario_nome
+            FROM agendamentos a
+            LEFT JOIN usuarios   u ON u.id_usuario     = a.id_usuario
+            LEFT JOIN servicos   s ON s.id_servicos    = a.id_servicos
+            LEFT JOIN funcionario f ON f.id_funcionario = a.id_funcionario
+            WHERE a.id = ?
+        `, [id]);
+
+        if (resultado.length === 0) {
+            return res.status(404).json({ error: "Agendamento não encontrado" });
+        }
+        res.json(resultado[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao buscar agendamento" });
+    }
+});
+
+// POST criar agendamento
+// Captura automaticamente o preço atual do serviço em agenda_valor
+app.post('/agendamentos', async (req, res) => {
+    try {
+        const { id_usuario, id_funcionario, id_servicos, data, status, feedback } = req.body;
+
+        if (!id_usuario || !id_funcionario || !id_servicos || !data) {
+            return res.status(400).json({
+                error: "id_usuario, id_funcionario, id_servicos e data são obrigatórios"
+            });
+        }
+
+        // Busca o preço atual do serviço para gravar em agenda_valor
+        const [servico] = await conexao.execute(
+            'SELECT preco FROM servicos WHERE id_servicos = ?',
+            [id_servicos]
+        );
+
+        if (servico.length === 0) {
+            return res.status(404).json({ error: "Serviço não encontrado" });
+        }
+
+        const agenda_valor = servico[0].preco;
+
+        const [resultado] = await conexao.execute(
+            `INSERT INTO agendamentos
+                (id_usuario, id_funcionario, id_servicos, agenda_valor, data, status, feedback)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [
+                id_usuario,
+                id_funcionario,
+                id_servicos,
+                agenda_valor,
+                data,
+                status || 'agendado',
+                feedback || null
+            ]
+        );
+
+        res.json({
+            insertId: resultado.insertId,
+            agenda_valor,
+            mensagem: `Agendamento criado! Valor registrado: R$ ${parseFloat(agenda_valor).toFixed(2)}`
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao criar agendamento" });
+    }
+});
+
+// PUT atualizar agendamento
+// Se o serviço mudar, atualiza agenda_valor com o preço atual do novo serviço
+app.put('/agendamentos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { id_usuario, id_funcionario, id_servicos, data, status, feedback } = req.body;
+
+        // Busca agendamento atual para comparar id_servicos
+        const [atual] = await conexao.execute(
+            'SELECT id_servicos, agenda_valor FROM agendamentos WHERE id = ?',
+            [id]
+        );
+
+        if (atual.length === 0) {
+            return res.status(404).json({ error: "Agendamento não encontrado" });
+        }
+
+        let agenda_valor = atual[0].agenda_valor;
+
+        // Se o serviço mudou, captura o novo preço
+        if (id_servicos && parseInt(id_servicos) !== parseInt(atual[0].id_servicos)) {
+            const [novoServico] = await conexao.execute(
+                'SELECT preco FROM servicos WHERE id_servicos = ?',
+                [id_servicos]
+            );
+            if (novoServico.length === 0) {
+                return res.status(404).json({ error: "Novo serviço não encontrado" });
+            }
+            agenda_valor = novoServico[0].preco;
+        }
+
+        const [resultado] = await conexao.execute(
+            `UPDATE agendamentos
+             SET id_usuario = ?, id_funcionario = ?, id_servicos = ?,
+                 agenda_valor = ?, data = ?, status = ?, feedback = ?
+             WHERE id = ?`,
+            [
+                id_usuario,
+                id_funcionario,
+                id_servicos,
+                agenda_valor,
+                data,
+                status,
+                feedback || null,
+                id
+            ]
+        );
+
+        res.json({
+            mensagem: "Agendamento atualizado com sucesso!",
+            agenda_valor
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao atualizar agendamento" });
+    }
+});
+
+// DELETE agendamento
+app.delete('/agendamentos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [resultado] = await conexao.execute(
+            'DELETE FROM agendamentos WHERE id = ?',
+            [id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: "Agendamento não encontrado" });
+        }
+
+        res.json({ mensagem: "Agendamento excluído com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao excluir agendamento" });
+    }
+});
+
+// GET agendamentos por funcionário
+app.get('/agendamentos/funcionario/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [resultado] = await conexao.execute(`
+            SELECT a.*, u.nome_completo AS cliente_nome, s.nome AS servico_nome
+            FROM agendamentos a
+            LEFT JOIN usuarios  u ON u.id_usuario  = a.id_usuario
+            LEFT JOIN servicos  s ON s.id_servicos = a.id_servicos
+            WHERE a.id_funcionario = ?
+            ORDER BY a.data DESC
+        `, [id]);
+        res.json(resultado);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao buscar agendamentos do funcionário" });
+    }
+});
+
+// GET agendamentos por usuário/cliente
+app.get('/agendamentos/usuario/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [resultado] = await conexao.execute(`
+            SELECT a.*, s.nome AS servico_nome, f.nome AS funcionario_nome
+            FROM agendamentos a
+            LEFT JOIN servicos   s ON s.id_servicos    = a.id_servicos
+            LEFT JOIN funcionario f ON f.id_funcionario = a.id_funcionario
+            WHERE a.id_usuario = ?
+            ORDER BY a.data DESC
+        `, [id]);
+        res.json(resultado);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao buscar agendamentos do usuário" });
+    }
+});
+
+// PATCH atualizar apenas o status de um agendamento
+app.patch('/agendamentos/:id/status', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const statusValidos = ['agendado', 'confirmado', 'concluido', 'cancelado'];
+        if (!statusValidos.includes(status)) {
+            return res.status(400).json({ error: `Status inválido. Use: ${statusValidos.join(', ')}` });
+        }
+
+        const [resultado] = await conexao.execute(
+            'UPDATE agendamentos SET status = ? WHERE id = ?',
+            [status, id]
+        );
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: "Agendamento não encontrado" });
+        }
+
+        res.json({ mensagem: `Status atualizado para "${status}"` });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Erro ao atualizar status" });
     }
 });
