@@ -789,3 +789,5 @@ app.patch('/agendamentos/:id/status', async (req, res) => {
         res.status(500).json({ error: "Erro ao atualizar status" });
     }
 });
+
+
