@@ -540,7 +540,18 @@ app.delete('/funcionarios/:id', async (req, res) => {
 
 
 // ===================== AGENDAMENTOS =====================
+//
+// IMPORTANTE: A tabela agendamentos precisa ter a coluna agenda_valor.
+// Rode o ALTER TABLE abaixo no seu banco antes de usar estas rotas:
+//
+//   ALTER TABLE agendamentos
+//     ADD COLUMN agenda_valor DECIMAL(10,2) NOT NULL DEFAULT 0.00
+//     AFTER id_servicos;
+//
+// Isso grava o preço do serviço no momento do agendamento,
+// evitando que alterações futuras de preço afetem o histórico.
 
+// GET todos os agendamentos (com JOIN para trazer nomes)
 app.get('/agendamentos', async (req, res) => {
     try {
         const [resultado] = await conexao.query(`
@@ -598,7 +609,8 @@ app.get('/agendamentos/:id', async (req, res) => {
     }
 });
 
-// criar agendamento
+// POST criar agendamento
+// Captura automaticamente o preço atual do serviço em agenda_valor
 app.post('/agendamentos', async (req, res) => {
     try {
         const { id_usuario, id_funcionario, id_servicos, data, status, feedback } = req.body;
@@ -647,7 +659,8 @@ app.post('/agendamentos', async (req, res) => {
     }
 });
 
-//atualizar agendamento
+// PUT atualizar agendamento
+// Se o serviço mudar, atualiza agenda_valor com o preço atual do novo serviço
 app.put('/agendamentos/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -725,7 +738,7 @@ app.delete('/agendamentos/:id', async (req, res) => {
     }
 });
 
-//agendamentos por funcionário
+// GET agendamentos por funcionário
 app.get('/agendamentos/funcionario/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -744,7 +757,7 @@ app.get('/agendamentos/funcionario/:id', async (req, res) => {
     }
 });
 
-//agendamentos por usuário/cliente
+// GET agendamentos por usuário/cliente
 app.get('/agendamentos/usuario/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -763,7 +776,7 @@ app.get('/agendamentos/usuario/:id', async (req, res) => {
     }
 });
 
-//atualizar apenas o status de um agendamento
+// PATCH atualizar apenas o status de um agendamento
 app.patch('/agendamentos/:id/status', async (req, res) => {
     try {
         const { id } = req.params;
@@ -789,5 +802,3 @@ app.patch('/agendamentos/:id/status', async (req, res) => {
         res.status(500).json({ error: "Erro ao atualizar status" });
     }
 });
-
-
